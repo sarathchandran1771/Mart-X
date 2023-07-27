@@ -1,0 +1,51 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th, table td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  background-color: #f2f2f2;
+}
+
+.add-product{
+  height: 15px;
+  width: 30px;
+  background-color: blue;
+  color: white;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 50%;
+
+}
+/***********************************
+
+/* modal button */
+
+.modal-btn {
+  background-color: blue;
+  color: white;
+  font-weight: 600;
+  position: fixed;
+  top:10%;
+  right: 20px;
+  transform: translateY(-50%);
+  z-index: 1050;
+}
+
+.modal-dialog-end {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+@media (max-width: 576px) {
+  .modal-dialog-end {
+    margin: 0;
+  }
+}

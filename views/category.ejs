@@ -1,0 +1,146 @@
+<link rel="stylesheet" href="/stylesheets/adminTable.css">
+<link rel="stylesheet" href="/stylesheets/adminDataTable.scss">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+
+<div class="content"> 
+  <!-- Main Body -->
+
+<div class="col-12">
+          <div class="modal" id="myModal" tabindex="-1">
+              <div class="modal-dialog modal-dialog-end">
+                  <div class="modal-content">
+                      <div class="modal-body">
+                          <form enctype="multipart/form-data" method="POST" action="/admin/category">
+                              <div class="form-group">
+                                  <label for="titleInput">Title</label>
+                                  <input type="text" class="form-control" name="title" id="titleInput" required>
+                              </div>
+                              <!--  -->
+                              <div class="form-group">
+                                <label for="productImage" class="form-label">Category Image:</label>
+                                <input type="file" class="form-control" name="productImage" id="productImage" required>
+                                <div id="imagePreview"></div>
+                                <input type="hidden" name="croppedImage" id="croppedImage">
+                              </div>                              
+                              <!--  -->
+                              <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                  <button type="submit" class="btn btn-primary">Save Product</button>
+                              </div>                        
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+          <div class="container-fluid pt-4 px-4">
+          <button type="button" class="modal-btn" data-bs-toggle="modal" data-bs-target="#myModal">
+              Add category
+          </button>
+          <div class="bg-secondary text-center rounded p-4">
+            <h3 class="mb-4">Add category</h3>
+            <div class="table-responsive">
+              <table class="table text-center align-middle table-bordered table-hover mb-0" id="categoryTable">
+                <thead>
+
+            <tr class="text-white">
+
+              <th scope="col">#</th>
+
+              <th scope="col">Image</th>
+
+              <th scope="col">Title</th>
+
+              <th scope="col">Actions</th>
+
+            </tr>
+          </thead>
+          <tbody class="text-white ">
+            <% if (products.length > 0) { %>
+              <% products.forEach(function(product, index) { %>
+                <tr id="product-<%= product._id %>">
+                  <th scope="row"><%= index + 1 %></th>
+                  <td><img src="/uploads/categoryUpload/<%= product.image %>" alt="<%= product.title %>" width="100" height="80"></td>
+                  <td><%= product.title %></td>
+                  <td>
+                    <!-- Edit Modal -->
+                    <!-- Edit Modal -->
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<%= product._id %>">Edit</button>
+                    <div class="modal fade" id="editModal<%= product._id %>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<%= product._id %>" aria-hidden="true">
+                      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel<%= product._id %>">Edit Product</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                              <form action="/admin/edit-category/<%= product._id %>" method="post">
+                              <label for="titleInput<%= product._id %>">Title:</label>
+                              <input type="text" class="form-control" id="titleInput<%= product._id %>" name="title" value="<%= product.title %>" placeholder="Enter title">
+                            
+                            </div>
+                        <div class="form-group">
+                              <label for="iconInput<%= product._id %>">Icon:</label>
+                              <input type="text" class="form-control" id="iconInput<%= product._id %>"  name="productImage" value="/uploads/<%= product.image %>" placeholder="Enter icon">
+                            </div>
+                          </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary" >Save</button>
+                          </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Edit Modal Ends -->
+
+                    <!-- delete Modal -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal<%= product._id %>">Delete Category</button>
+                    <div class="modal fade" id="exampleModal<%= product._id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirm Remove</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                          Are you sure you want to remove?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger" onclick="window.location.href='/admin/delete-product/<%= product._id %>'">Remove</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <!-- Delete Modal Ends-->
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="4">No category available.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+      <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+</div> 
+<script src="/javaScript/admin.js"></script>
+
+<script src="/javaScript/adminDataTable.js"></script>
+
+

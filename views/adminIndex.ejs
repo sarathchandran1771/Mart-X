@@ -1,0 +1,345 @@
+
+<!-- Add these lines in the <head> section of your HTML file -->
+ 
+  
+    <!-- Sale & Revenue Start -->
+    <div class="content">
+    <div class="container-fluid pt-4 px-4">
+<div class="row g-4">
+  <div class="col-sm-6 col-xl-3">
+    <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+      <i class="fa fa-chart-line fa-3x text-primary"></i>
+      <div class="ms-3">
+        <p class="mb-2">Total Amount</p>
+        <h6 class="mb-0">$<%= totalAmount %></h6>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-xl-3">
+    <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+      <i class="fa fa-chart-bar fa-3x text-primary"></i>
+      <div class="ms-3">
+        <p class="mb-2">Number of Orders</p>
+        <h6 class="mb-0"><%= numberOfOrders %></h6>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-xl-3">
+    <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+      <i class="fa fa-chart-area fa-3x text-primary"></i>
+      <div class="ms-3">
+        <p class="mb-2">COD</p>
+        <h6 class="mb-0">$<%= codAmount %></h6>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-xl-3">
+    <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
+      <i class="fa fa-chart-pie fa-3x text-primary"></i>
+      <div class="ms-3">
+        <p class="mb-2">Online</p>
+        <h6 class="mb-0">$<%= onlineAmount %></h6>
+      </div>
+    </div>
+  </div>
+</div>
+
+    </div>
+    <!-- Sale & Revenue End -->
+
+<!-- Sales Chart Start -->
+
+<div class="container-fluid pt-4 px-4">
+  <div class="dropdown mt-4">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Sort Data
+    </button>
+    <div class="dropdown-menu" aria-labelledby="sortDropdown" id="sortingOptionsDropdown">
+      <a class="dropdown-item" href="#" data-sort-option="daily">Daily</a>
+      <a class="dropdown-item" href="#" data-sort-option="weekly">Weekly</a>
+      <a class="dropdown-item" href="#" data-sort-option="monthly">Monthly</a>
+    </div>
+  </div>
+  
+  <div class="row g-4">
+      <div class="col-sm-12 col-xl-6">
+          <div class="bg-secondary text-center rounded p-4">
+              <div class="d-flex align-items-center justify-content-between mb-4">
+                  <h6 class="mb-0">Revenue</h6>
+                  
+<div>
+<!-- Add a link/button for downloading the PDF -->
+<a href="/admin/download-sales-report-pdf">Download Sales Report PDF</a>
+</div>
+              </div>
+              <canvas id="worldwide-sales"></canvas>
+          </div>
+      </div>
+
+      <div class="col-sm-12 col-xl-6">
+        <div class="bg-secondary text-center rounded p-4">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Payment Method</h6>
+            <a href="">Show All</a>
+          </div>
+          <canvas id="sales-revenue"></canvas>
+        </div>
+      </div>
+  </div>
+</div>
+
+</div>
+
+
+</div>
+<!-- Content End -->
+</div>
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var worldwideSalesCanvas = document.getElementById("worldwide-sales");
+    var salesRevenueCanvas = document.getElementById("sales-revenue");
+
+    let chartData = JSON.parse('<%- chartData %>');
+    let ratio = chartData.datasets[0].data[0] / chartData.datasets[0].data[1]; // Initialize ratio
+
+    const numberOfOrdersChart = new Chart(worldwideSalesCanvas.getContext("2d"), {
+      type: "bar",
+      data: {
+        labels: [chartData.labels[0]],
+        datasets: [
+          {
+            label: `${chartData.datasets[0].label} (${chartData.labels[0]})`,
+            data: chartData.datasets[0].data,
+            backgroundColor: chartData.datasets[0].backgroundColor
+          }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    });
+
+    const paymentMethodChart = new Chart(salesRevenueCanvas.getContext("2d"), {
+      type: "pie",
+      data: {
+        labels: ["COD", "Online"],
+        datasets: [
+          {
+            label: `COD: ${chartData.datasets[1].data[1]}`, // Include the COD count in the label
+            data: [chartData.datasets[1].data[1], 0], // Use the COD count data
+            backgroundColor: chartData.datasets[1].backgroundColor
+          },
+          {
+            label: `Online: ${chartData.datasets[2].data[0]}`, // Include the Online count in the label
+            data: [0, chartData.datasets[2].data[0]], // Use the Online count data
+            backgroundColor: chartData.datasets[2].backgroundColor
+          }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    });
+  });</script> -->
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var worldwideSalesCanvas = document.getElementById("worldwide-sales");
+    var salesRevenueCanvas = document.getElementById("sales-revenue");
+
+    let chartData = JSON.parse('<%- chartData %>');
+    let ratio = chartData.datasets[0].data[0] / chartData.datasets[0].data[1]; // Initialize ratio
+
+    const numberOfOrdersChart = new Chart(worldwideSalesCanvas.getContext("2d"), {
+      type: "bar",
+      data: {
+        labels: [chartData.labels[0]],
+        datasets: [
+          {
+            label: `${chartData.datasets[0].label} (${chartData.labels[0]})`,
+            data: chartData.datasets[0].data,
+            backgroundColor: chartData.datasets[0].backgroundColor
+          }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    });
+
+    const paymentMethodChart = new Chart(salesRevenueCanvas.getContext("2d"), {
+      type: "pie",
+      data: {
+        labels: ["COD", "Online"],
+        datasets: [
+          {
+            label: `COD: ${chartData.datasets[1].data[1]}`, // Include the COD count in the label
+            data: [chartData.datasets[1].data[1], 0], // Use the COD count data
+            backgroundColor: chartData.datasets[1].backgroundColor
+          },
+          {
+            label: `Online: ${chartData.datasets[2].data[0]}`, // Include the Online count in the label
+            data: [0, chartData.datasets[2].data[0]], // Use the Online count data
+            backgroundColor: chartData.datasets[2].backgroundColor
+          }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    });
+  const sortingOptionsDropdown = document.getElementById("sortingOptionsDropdown");
+
+  sortingOptionsDropdown.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  const sortingOptionsItems = sortingOptionsDropdown.querySelectorAll(".dropdown-item");
+  sortingOptionsItems.forEach(item => {
+    item.addEventListener("click", () => {
+      const selectedOption = item.getAttribute("data-sort-option");
+      sortData(selectedOption);
+    });
+  });
+
+  function sortData(option) {
+    fetch(`/admin/dashboard?sort=${option}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        chartData = JSON.parse(data.chartData);
+  console.log("chartData",chartData);
+        // Update the numberOfOrdersChart
+        numberOfOrdersChart.data.labels = chartData.labels;
+        numberOfOrdersChart.data.datasets[0].data = chartData.datasets[0].data;
+        numberOfOrdersChart.data.datasets[0].label = `${chartData.datasets[0].label} (${chartData.labels[0]})`;
+        numberOfOrdersChart.update();
+  
+        // Update the paymentMethodChart
+        paymentMethodChart.data.datasets[0].label = `COD: ${chartData.datasets[1].data[0]}`;
+        paymentMethodChart.data.datasets[0].data = [chartData.datasets[1].data[0], 0];
+        paymentMethodChart.data.datasets[1].label = `Online: ${chartData.datasets[1].data[1]}`;
+        paymentMethodChart.data.datasets[1].data = [0, chartData.datasets[1].data[1]];
+        paymentMethodChart.update();
+  
+        // Update the ratio
+        ratio = chartData.datasets[0].data[0] / chartData.datasets[0].data[1];
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }
+});
+</script>
+
+<!-- <script>
+      function sortData(option) {
+      fetch(`/admin/dashboard?sort=${option}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok.');
+          }
+          return response.json();
+          console.log("response",response);
+        })
+        .then(data => {
+          chartData = JSON.parse(data.chartData);
+console.log("sortData",sortData);
+          // Update the numberOfOrdersChart
+          numberOfOrdersChart.data.labels = [chartData.labels[0]];
+          numberOfOrdersChart.data.datasets[0].data = chartData.datasets[0].data;
+          numberOfOrdersChart.data.datasets[0].label = `${chartData.datasets[0].label} (${chartData.labels[0]})`;
+          numberOfOrdersChart.update();
+
+          // Update the paymentMethodChart
+          paymentMethodChart.data.datasets[0].label = `COD: ${chartData.datasets[1].data[1]}`;
+          paymentMethodChart.data.datasets[0].data = [chartData.datasets[1].data[1], 0];
+          paymentMethodChart.data.datasets[1].label = `Online: ${chartData.datasets[2].data[0]}`;
+          paymentMethodChart.data.datasets[1].data = [0, chartData.datasets[2].data[0]];
+          paymentMethodChart.update();
+
+          // Update the ratio
+          ratio = chartData.datasets[0].data[0] / chartData.datasets[0].data[1];
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+        });
+    }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var worldwideSalesCanvas = document.getElementById("worldwide-sales");
+    var salesRevenueCanvas = document.getElementById("sales-revenue");
+
+    let chartData = JSON.parse('<%- chartData %>');
+    let ratio = chartData.datasets[0].data[0] / chartData.datasets[0].data[1]; // Initialize ratio
+
+    const numberOfOrdersChart = new Chart(worldwideSalesCanvas.getContext("2d"), {
+      type: "bar",
+      data: {
+        labels: [chartData.labels[0]],
+        datasets: [
+          {
+            label: `${chartData.datasets[0].label} (${chartData.labels[0]})`,
+            data: chartData.datasets[0].data,
+            backgroundColor: chartData.datasets[0].backgroundColor
+          }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    });
+
+    const paymentMethodChart = new Chart(salesRevenueCanvas.getContext("2d"), {
+      type: "pie",
+      data: {
+        labels: ["COD", "Online"],
+        datasets: [
+          {
+            label: `COD: ${chartData.datasets[1].data[1]}`, // Include the COD count in the label
+            data: [chartData.datasets[1].data[1], 0], // Use the COD count data
+            backgroundColor: chartData.datasets[1].backgroundColor
+          },
+          {
+            label: `Online: ${chartData.datasets[2].data[0]}`, // Include the Online count in the label
+            data: [0, chartData.datasets[2].data[0]], // Use the Online count data
+            backgroundColor: chartData.datasets[2].backgroundColor
+          }
+        ]
+      },
+      options: {
+        responsive: true
+      }
+    });
+
+
+    // Function to handle sorting options dropdown
+    const sortingOptionsDropdown = document.getElementById("sortingOptionsDropdown");
+    sortingOptionsDropdown.addEventListener("click", (event) => {
+      event.stopPropagation();
+    });
+
+    const sortingOptionsItems = sortingOptionsDropdown.querySelectorAll(".dropdown-item");
+    sortingOptionsItems.forEach(item => {
+      item.addEventListener("click", () => {
+        const selectedOption = item.getAttribute("data-sort-option");
+        sortData(selectedOption);
+      });
+    });
+  });
+</script> -->

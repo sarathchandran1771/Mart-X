@@ -1,0 +1,46 @@
+<div class="content">
+<div class="container-fluid pt-4 px-4">
+<div class="bg-secondary text-center rounded p-4">
+    <h3 class="mb-4">User Management</h3>
+    <div class="table-responsive">
+      <table class="table text-center align-middle table-bordered table-hover mb-0">
+            <thead>
+              <tr>
+                <th scope="col">SI No</th>
+                <th scope="col">User ID</th>
+                <th scope="col">User Name</th>
+                <th scope="col">Contact Number</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% if (users && users.length) { %>
+                <% users.forEach((user, index) => { %>
+                  <tr>
+                    <td><%= index + 1 %></td>
+                    <td><%= user._id %></td>
+                    <td><%= user.username %></td>
+                    <td><%= user.number %></td>
+                    <td>
+                      <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheck<%= user._id %>" <% if (user.isDeleted) { %>checked<% } %>>
+                        <label class="form-check-label" for="flexSwitchCheck<%= user._id %>">
+                          <span id="label<%= user._id %>"><%= user.isDeleted ? 'Blocked' : 'Unblocked' %></span>
+                        </label>
+                      </div>
+                    </td>
+                  </tr>
+                <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="5">No users found.</td>
+                </tr>
+              <% } %>
+            </tbody>     
+    </table>
+</div>
+</div>
+</div>
+</div>
+
+<script src="/javaScript/admin.js"></script>

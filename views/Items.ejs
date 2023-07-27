@@ -1,0 +1,241 @@
+<link rel="stylesheet" href="/stylesheets/adminTable.css">
+<link rel="stylesheet" href="/stylesheets/adminDataTable.scss">
+
+
+  <div class="content">
+  <!-- Main Body -->
+  <div class="modal" id="myModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-end">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form action="/admin/items" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="additionalImages" class="form-label">Product Image:</label>
+                        <input type="file" class="form-control" name="additionalImages" id="additionalImages" multiple required>
+                    </div>
+                    <div class="form-group">
+                      <label for="ModelInput">Model</label>
+                      <input type="text" class="form-control" name="Model" id="ModelInput" required>
+                  </div>
+               
+                  <div class="form-group">
+                    <label for="category">Category:</label>
+                    <select class="form-control" id="category" name="category" required>
+                      <% categories.forEach(function(categoryList) { %>
+                        <option value="<%= categoryList._id.toString() %>"><%= categoryList.title %></option>
+                      <% }) %>
+                    </select>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="BrandInput">Brand</label>
+                    <input type="text" class="form-control" name="brand" id="BrandInput" required>
+                </div>
+                <div class="form-group">
+                  <label for="varientInput">varient</label>
+                  <input type="text" class="form-control" name="varient" id="varientInput" required>
+              </div>
+                <div class="form-group">
+                    <label for="descriptionInput">Description</label>
+                    <input type="text" class="form-control" name="description" id="descriptionInput" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="RatingInput">Rating</label>
+                    <input type="number" class="form-control" name="rating" id="RatingInput" required>
+                  </div>
+                    <div class="form-group">
+                        <label for="SellamountInput">Sell Price</label>
+                        <input type="number" class="form-control" name="SellPrice" id="SellamountInput" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="OfferedamountInput">Offered Price</label>
+                      <input type="number" class="form-control" name="OfferedPrice" id="OfferedamountInput" required>
+                  </div>
+                    <div class="form-group">
+                        <label for="quantityInput">Quantity</label>
+                        <input type="number" class="form-control" name="quantity" id="quantityInput" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Product</button>
+                    </div>                        
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+<div class="container-fluid pt-4 px-4">
+  <button type="button" class="modal-btn" data-bs-toggle="modal" data-bs-target="#myModal">
+    Add Product
+</button>
+  <div class="bg-secondary text-center rounded p-4">
+      <h3 class="mb-4">Add Products</h3>
+      <div class="table-responsive">
+        <table id="itemTable" class="table text-center align-middle table-bordered table-hover mb-0 bg-secondary">
+          <thead>
+            <tr class="text-white">
+              <th scope="col">Num</th>
+              
+              <th scope="col">Product Image</th>
+
+              <th scope="col">Model</th>
+
+              <th scope="col">Category</th>
+              
+              <th scope="col">Brand</th>
+
+              <th scope="col">varient</th>
+
+              <th scope="col">Discription</th>
+
+              <th scope="col">Rating </th>
+
+              <th scope="col">Sell Price</th>
+
+              <th scope="col">Offered Price</th>
+
+              <th scope="col">Quantity</th>
+
+              <th scope="col">Edit</th>
+
+              <th scope="col">List/Unlist</th>
+            </tr>
+          </thead>
+          <tbody class="text-white">
+            <% if (item.length > 0) { %>
+              <% item.forEach((newItem, index) => { %>
+                <tr>
+                  <td><%= index + 1 %></td>
+                  <td> <img src="/uploads/productUpload/<%= newItem.itemImage[0] %>"width="100" height="80"></td>
+                  <td><span class="d-inline-block text-truncate" style="max-width: 150px;"><%= newItem.Model %></span></td>
+                
+
+                <td>
+                      <% if (newItem.category) { %>
+                        <% categories.forEach(function(category) { %>
+                          <% if (category._id.toString() === newItem.category.toString()) { %>
+                            <span class="d-inline-block text-truncate" style="max-width: 150px;">
+                            <%= category.title %></span>
+                          <% } %>
+                        <% }); %>
+                      <% } %>
+                  </td>
+
+                  
+                  <td><%= newItem.moreInfo.brand %> </td>
+                  <td><span class="d-inline-block text-truncate" style="max-width: 150px;"> <%= newItem.moreInfo.varient %> </span> </td>
+                  <td><span class="d-inline-block text-truncate" style="max-width: 150px;"><%= newItem.description %></span></td>
+                  <td><%= newItem.moreInfo.rating %></td>                  
+                  <td><%= newItem.SellPrice %></td>
+                  <td><%= newItem.OfferedPrice %></td>
+                  <td><%= newItem.quantity %></td>
+
+                  <td>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<%= newItem._id %>">Edit</button>
+                  <div class="modal fade" id="editModal<%= newItem._id %>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<%= newItem._id %>" aria-hidden="true">
+                  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel<%= newItem._id %>">Edit Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  </div>
+                <div class="modal-body">
+                      <form action="/admin/edit-product/<%= newItem._id %>" method="post"> 
+                    <div class="form-group">
+                  <label for="iconInput<%= newItem._id %>">Icon:</label>
+                 <input type="text" class="form-control" id="iconInput<%= newItem._id %>"  name="additionalImages" value="/uploads/<%= newItem.itemImage %>" placeholder="Enter icon">
+                </div> 
+               <div class="form-group">   
+                  <label for="ModelInput<%= newItem._id %>">Model:</label>
+                  <input type="text" class="form-control" id="titleInput<%= newItem._id %>" name="Model" value="<%= newItem.Model %>" placeholder="Enter Model">
+                 </div> 
+
+                  <div class="form-group">
+                 <label for="category">Category:</label>
+                  <select class="form-control" id="category" name="category" required>
+                 <% categories.forEach(function(categoryList) { %>
+                 <option value="<%= categoryList._id.toString() %>"><%= categoryList.title %></option>
+                <% }) %>
+               </select>
+              </div>
+              <div class="form-group">
+              <label for="BrandInput<%= newItem._id %>">Brand:</label>
+              <input type="text" class="form-control" id="BrandInput<%= newItem._id %>" name="brand" value="<%= newItem.moreInfo.brand %>" placeholder="Enter brand">
+              </div>
+
+          <div class="form-group">
+            <label for="VarientInput<%= newItem._id %>">Varient:</label>
+            <input type="text" class="form-control" id="VarientInput<%= newItem._id %>" name="varient" value="<%= newItem.moreInfo.varient %>" placeholder="Enter varient">
+          </div>
+
+          <div class="form-group">
+            <label for="descriptionInput<%= newItem._id %>">description:</label>
+            <input type="text" class="form-control" id="descriptionInput<%= newItem._id %>" name="description" value="<%= newItem.description %>" placeholder="Enter description">
+          </div>
+
+          <div class="form-group">
+            <label for="ratingInput<%= newItem._id %>">rating:</label>
+            <input type="text" class="form-control" id="ratingInput<%= newItem._id %>" name="rating" value="<%= newItem.rating %>" placeholder="Enter rating">
+          </div>
+
+          
+          <div class="form-group">
+            <label for="SellPriceInput<%= newItem._id %>">Sell Price:</label>
+            <input type="text" class="form-control" id="SellPriceInput<%= newItem._id %>" name="SellPrice" value="<%= newItem.SellPrice %>" placeholder="Enter Sell Price">
+          </div>
+
+          <div class="form-group">
+            <label for="OfferedPriceInput<%= newItem._id %>">Offered Price:</label>
+            <input type="text" class="form-control" id="OfferedPriceInput<%= newItem._id %>" name="OfferedPrice" value="<%= newItem.OfferedPrice %>" placeholder="Enter Offered Price">
+          </div>
+
+          <div class="form-group">
+            <label for="quantityInput<%= newItem._id %>">quantity:</label>
+            <input type="text" class="form-control" id="quantitynput<%= newItem._id %>" name="quantity" value="<%= newItem.quantity %>" placeholder="Enter quantity">
+          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+
+            <button type="submit" class="btn btn-primary">Update</button>
+            </div>
+                </form>
+                 </div>
+          </div>
+             </div>
+              </div>
+                </td>  
+                  <td>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" id="flexSwitchCheck<%= newItem._id %>" <% if (newItem.isDeleted) { %>checked<% } %>>
+                      <label class="form-check-label" for="flexSwitchCheck<%= newItem._id %>">
+                        <span id="label<%= newItem._id %>"><%= newItem.isDeleted ? 'Active' : 'Deleted' %></span>
+                      </label>
+                    </div>
+                  </td>
+
+                </tr>
+              <% }) %>
+            <% } else { %>
+              <tr>
+                <td colspan="9">No products available.</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    </div>     
+ </div>
+    
+
+    
+    <script src="/javaScript/admin.js"></script>
+
+    <script src="/javaScript/adminDataTable.js"></script>
+
+

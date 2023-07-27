@@ -1,0 +1,216 @@
+const express = require('express');
+const router = express.Router();
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
+const path = require('path');
+
+// Configure storage for the main product image
+const storage = multer.diskStorage({
+  destination: './public/uploads/categoryUpload/',
+  filename: function (req, file, cb) {
+    const uniqueID = uuidv4(); // Generate unique ID
+    const extension = path.extname(file.originalname);
+    cb(null, uniqueID + extension);
+  }
+});
+// Initialize Multer for the main product image
+const upload = multer({storage: storage}).single('productImage');
+
+// Configure storage for additional images
+const additionalImagesStorage = multer.diskStorage({
+  destination: './public/uploads/productUpload',
+  filename: function (req, file, cb) {
+    const uniqueID = uuidv4(); // Generate unique ID
+    const extension = path.extname(file.originalname);
+    cb(null, uniqueID + extension);
+  }
+});
+// Initialize Multer for additional images
+const uploads = multer({ storage: additionalImagesStorage }).array('additionalImages', 5*1024*1024);
+
+
+
+ // Pass field names as separate arguments
+
+// Import the Admin model
+const CategoryModel = require('../models/categoryModel');
+const ProductModel =  require('../models/productsModel');
+
+
+const adminController = require('../controller/adminController/adminLogin');
+
+router.get('/admin', adminController.getLogin);
+router.get('/admin/signin', adminController.getLogin);
+router.post('/signin', adminController.postLogin);
+router.get('/logout', adminController.logout);
+
+
+
+
+
+
+/* GET admin page. */
+router.get('/', async function (req, res, next) {
+  try {
+    const products = await CategoryModel.find({});
+    res.render('signin', { products, successMessage: req.flash('success'), errorMessage: req.flash('error') });
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// GET new item form
+// GET items
+
+router.get('/items', async function(req, res, next) {
+  try {
+    console.log("Get item try");
+    const item = await ProductModel.find({});
+    const categories  = await CategoryModel.find({});
+    res.render('items', { item , categories });
+  } catch (err) {
+    console.log("Get item err");
+  }
+});
+// POST create item
+router.post('/items', uploads, async(req, res, next)=>{
+  try{
+    console.log("post item try", req.body);
+    const {
+      category,
+      SellPrice,
+      OfferedPrice,
+      Model,
+      brand,
+      varient,
+      rating,
+      description,
+      quantity
+    } = req.body;
+
+      console.log("file",req.file);
+    const itemImages = req.files.map(file => file.filename);
+    const productList = new ProductModel({
+      SellPrice: SellPrice,
+      OfferedPrice:OfferedPrice,
+      moreInfo:{
+        brand: brand,
+        varient: varient,
+        rating: rating
+        },
+      Model:Model,
+      itemImage: itemImages,
+      description: description,
+      quantity: quantity, 
+      category:category,
+    })
+    
+    await productList.save(); 
+    req.flash('success', 'Item added successfully!');
+    console.log("Item added");
+    res.redirect('/admin/items');
+  } catch (err) {
+    console.log("newItemPost error",err);
+    req.flash('error', 'Error saving item');
+    res.redirect('/admin/items');
+  }
+});
+ 
+
+// dashboard Get*************
+router.get('/dashboard', function (req, res, next) {
+  res.render('dashboard');
+});
+
+
+/* GET category page. */
+router.get('/category', async function (req, res, next) {
+  try {
+    const products = await CategoryModel.find({});
+    res.render('category', { products });
+  } catch (err) {
+  }
+});
+//* Post category page. */
+
+router.post('/category', upload, function (req, res, next) {
+  const { title } = req.body;
+  const categoryImage = req.file.filename
+  const categoryList = new CategoryModel({
+    title: title,
+    image: categoryImage
+  })
+  categoryList.save()
+    .then(() => {
+      req.flash('success', 'Category added successfully!');
+      res.redirect('/admin/category');
+    })
+    .catch(err => {
+      req.flash('error', 'Error saving category');
+      res.redirect('/admin');
+    });
+});
+
+
+// // Edit get*****************
+router.get('/edit-product/:id', async (req, res, next) => {
+  try {
+    const productId = req.params.id;
+    const product = await CategoryModel.findById(productId);
+    if (!product) {
+      req.flash('error', 'Product not found');
+      return res.redirect('/admin');
+    }
+    res.render('admin', { product });
+  } catch (error) {
+    // Handle the error
+    next(error);
+  }
+});
+
+// // Edit put*******************
+
+router.post('/edit-category/:id', async (req, res, next) => {
+  try {
+    console.log(req.body)
+    const productId=req.params.id
+
+    const { title, icon } = req.body;
+    const updatedProduct = { title, icon };
+
+    const product = await CategoryModel.findByIdAndUpdate(productId, updatedProduct).then((result)=>{
+      console.log(result)
+          res.redirect('/admin/category');
+    })
+    if (!product) {
+      req.flash('error', 'Product not found');
+    } else {
+      req.flash('success', 'Product updated successfully!');
+    }
+  } catch (error) {
+    // Handle the error
+    next(error);
+  }
+});
+
+// //  delete******************
+router.get('/delete-product/:id', async (req, res, next) => {
+  try {
+    const productId = req.params.id;
+    const result = await CategoryModel.deleteOne({ _id: productId });
+
+    if (result.deletedCount === 0) {
+      req.flash('error', 'Product not found');
+    } else {
+      req.flash('success', 'Product deleted successfully!');
+    }
+    res.redirect('/admin/category');
+  } catch (error) {
+    // Handle the error
+    next(error);
+  }
+});
+
+
+
+module.exports = router;

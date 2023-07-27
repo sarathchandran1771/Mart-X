@@ -1,0 +1,204 @@
+<div class="content">
+    <div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary text-center rounded p-4">
+        <h3 class="mb-4">Order Management</h3>
+        <div class="table-responsive">
+          <table class="table text-center align-middle table-bordered table-hover mb-0">
+            <thead class="thead-dark">
+              <tr>
+                <th>Order ID</th>
+                <th>Date</th>
+                <th>Shipping Address</th>
+                <th>Amount</th>
+                <th>ETA</th>
+                <th>Payment Method</th>
+                <th>Product_id</th>
+                <th>Images</th>
+                <th>Order Status</th>
+
+
+              </tr>
+            </thead>
+            <tbody class="align-middle text-white">
+              <% if (orderList.length === 0) { %>
+                <tr>
+                  <td colspan="6" class="text-center">No Orders available.</td>
+                </tr>
+              <% } else { %>
+                <% orderList.reverse().forEach(function(order) { %>
+                  <tr>
+                    <td><%= order.id %></td>
+                    <td><%= order.date %></td>
+                    <td>
+                      <% if (Array.isArray(order.address)) { %>
+                        <% for (const address of order.address) { %>
+                          <%= address.name.firstName %> <%= address.name.lastName %> <br>
+                          <%= address.street %><br>
+                          <%= address.city %>, <%= address.state %> <%= address.pin %><br>
+                          <%= address.landmark %><br>
+                          <%= address.addressType %>
+                        <% } %>
+                      <% } else { %>
+                        <%= order.address %> <!-- Handle the case when order.address is not an array -->
+                      <% } %>
+                    </td>
+                    <td><%= order.amount %></td>
+                    <td><%= order.ETA %></td>
+                    <td><%= order.paymentMethod %></td>
+                    <td>
+                      <% if (Array.isArray(order.product)) { %>
+                        <% for (const product of order.product) { %>
+                          <div>
+                            <span class="align-middle">
+                              <img src="/uploads/productUpload/<%= product.itemImage %>" width="100" height="80">
+                            </span>
+                            <span><%= product.Model %></span>
+                            <!-- Display additional product properties if needed -->
+                          </div>
+                        <% } %>
+                      <% } else { %>
+                        <div>
+                          <span class="align-middle">
+                            <img src="/uploads/productUpload/<%= order.product.itemImage %>" width="100" height="80">
+                          </span>
+                          <span><%= order.product.Model %></span>
+                          <!-- Display additional product properties if needed -->
+                        </div>
+                      <% } %>
+                      
+                    </td>
+                    <td>
+                      <% if (Array.isArray(order.product)) { %>
+                        <% for (const product of order.product) { %>
+                          <button data-toggle="modal" data-target="#exampleModal-<%= product._id %>">View</button>
+                          <div class="modal fade" id="exampleModal-<%= product._id %>" tabindex="-1" aria-labelledby="exampleModalLabel-<%= product._id %>" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title" id="exampleModalLabel-<%= product._id %>">Modal Title</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="container-fluid">
+                                    <div class="row">
+                                      <div class="col-md-8 border">
+                                        <img src="/uploads/productUpload/<%= order.product.itemImage %>" width="120" height="100">
+                                      </div>
+                                      <div class="col-md-4 ms-auto text-dark">Model: <%= order.product.Model %></div>
+                                    </div>
+                                    <div class="row text-dark">
+                                      <div class="col-md-12 ms-auto">Description: <%= order.product.description %></div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                      <div class="col-sm-9">
+                                        <div class="row text-dark">
+                                          <div class="col-6 col-md-6 border-right"> <!-- Left Edge -->
+                                            quantity: <%= order.product.quantity %>
+                                          </div>
+                                          <div class="col-6 col-md-6 border-left"> <!-- Right Edge -->
+                                            SellPrice: <%= order.product.SellPrice %>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                              </div>
+                              </div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                        <% } %>
+                      <% } else { %>
+                        <button data-toggle="modal" data-target="#exampleModal-<%= order.product._id %>">View</button>
+                        <div class="modal fade" id="exampleModal-<%= order.product._id %>" tabindex="-1" aria-labelledby="exampleModalLabel-<%= order.product._id %>" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel-<%= order.product._id %>">Modal Title</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="container-fluid">
+                                  <div class="row">
+                                    <div class="col-md-8 border">
+                                      <img src="/uploads/productUpload/<%= order.product.itemImage %>" width="120" height="100">
+                                    </div>
+                                    <div class="col-md-4 ms-auto text-dark">Model: <%= order.product.Model %></div>
+                                  </div>
+                                  <div class="row text-dark">
+                                    <div class="col-md-12 ms-auto">Description: <%= order.product.description %></div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-9">
+                                      <div class="row text-dark">
+                                        <div class="col-6 col-md-6 border-right"> <!-- Left Edge -->
+                                          quantity: <%= order.product.quantity %>
+                                        </div>
+                                        <div class="col-6 col-md-6 border-left"> <!-- Right Edge -->
+                                          SellPrice: <%= order.product.SellPrice %>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  
+                            </div>
+                            </div>
+                          </div>
+                        </div>
+                      <% } %>
+                    </td>
+                    <td>
+                      <select name="orderStatus" id="orderStatus" onchange="updateStatus('<%= order.id %>', this.value)">
+                        <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                        <option value="processing" <%= order.status === 'processing' ? 'selected' : '' %>>Processing</option>
+                        <option value="completed" <%= order.status === 'completed' ? 'selected' : '' %>>Completed</option>
+                        <option value="cancelled" <%= order.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <% }) %>
+                  <% } %>
+            </tbody>          
+          </table>
+       
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+    
+    
+    <script src="/javaScript/admin.js"></script>
+
+
+    <script>
+      // You can use JavaScript to handle updating the order status on the server-side
+      function updateStatus(orderId) {
+          const newStatus = document.getElementById('orderStatus').value;
+          console.log(orderId);
+          fetch(`/admin/updateOrderStatus/`+ orderId, {
+              method: 'PATCH',
+              body: JSON.stringify({ status: newStatus }),
+              headers: {
+                  'Content-Type': 'application/json'
+              }
+          })
+          .then(response => response.json())
+          .then(data => {
+              // Handle the response from the server if needed
+              console.log(data);
+          })
+          .catch(error => {
+              console.error('Error updating status:', error);
+          });
+          alert(`Order ID: ${orderId}, New Status: ${newStatus}`);
+      }
+  </script>

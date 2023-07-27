@@ -1,0 +1,267 @@
+<link rel="stylesheet" href="/stylesheets/adminTable.css">
+<link rel="stylesheet" href="/stylesheets/adminDataTable.scss">
+
+
+<div class="content p-5">
+    <div class="row px-xl-5 bg-secondary">
+        <div class="col">
+            <div class="bg-secondary p-30">
+              <!-- checkOut.ejs -->
+
+<!-- ... Existing code ... -->
+
+<!-- ... Existing code ... -->
+
+                <div class="nav nav-tabs mb-4">
+                    <a class="nav-item nav-link text-white active" data-toggle="tab" href="#tab-pane-1">Coupon</a>
+                    <a class="nav-item nav-link text-white" data-toggle="tab" href="#tab-pane-2">Category Offer</a>
+                    <a class="nav-item nav-link text-white" data-toggle="tab" href="#tab-pane-3">Products Offer</a>
+
+                </div>
+                <div class="tab-content">
+
+                    <div class="tab-pane fade show active" id="tab-pane-1">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table id="couponTable" class="table table-bordered text-center align-middle table-hover mb-0">
+                                    <thead class="align-middle">
+                                      <tr>
+                                        <th class="align-middle">#</th>
+                                        <th class="align-middle">Coupon Code</th>
+                                        <th class="align-middle">Description</th>
+                                        <th class="align-middle">Discount</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <% coupon.forEach(function(coupon, index) { %>
+                                        <tr>
+                                          <td><%= index + 1 %></td>
+                                          <td><%= coupon.voucherCode %></td>
+                                          <td><%= coupon.description %></td>
+                                          <td><%= coupon.price %></td>
+                                        </tr>
+                                      <% }) %>
+                                    </tbody>
+                                  </table>
+                            </div>
+                            <div class="col-md-6 p-5">
+                                <h4 class="mb-4">Create a Coupon</h4>
+                                <small>Create a Coupon for the products*</small>
+                                <form action="/admin/addcoupon" method="post">
+                                    <div class="form-group">
+                                        <label for="name">Name*</label>
+                                        <input type="text" class="form-control" name="name" id="name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Code*</label>
+                                        <input type="text" class="form-control" name="voucherCode" id="voucherCode">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Price*</label>
+                                        <input type="text" class="form-control" name="price" id="Price">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="message">Description *</label>
+                                        <textarea name="description" id="message" cols="30" rows="5" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <input type="submit" value="Submit" class="btn btn-primary px-3">
+                                    </div>
+                                </form>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab-pane-2">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4 class="mb-4">1 review for "Category Name"</h4>
+                                <div class="media mb-4">
+                                    <img src="/img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                    <div class="media-body">
+                                        <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
+                                        <div class="text-primary mb-2">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-5">
+                                <h4 class="mb-4">Create a Offer</h4>
+                                <small >Create a Offer for the Category*</small>
+                                <form action="/admin/addategoryOffer" method="post">
+                                        <div class="form-group">
+                                            <label for="category">Category:</label>
+                                            <select class="form-control" id="category" name="category" required>
+                                              <% categories.forEach(function(categoryList) { %>
+                                                <option value="<%= categoryList._id.toString() %>"><%= categoryList.title %></option>
+                                              <% }) %>
+                                            </select>
+                                          </div>    
+                                         <div class="form-group">
+                                            <label for="minSpent">name*</label>
+                                            <input type="text" class="form-control" id="name" name="name" required>
+                                          </div>
+    
+                                         <div class="form-group">
+                                            <label for="Products">Products:</label>
+                                             <select class="form-control" id="Products" name="products" required>
+                                            <% product.forEach(function(product) { %>
+                                            <option value="<%= product._id.toString() %>"> <%= product.Model %></option>
+                                            <% }) %>
+                                          </select>
+                                         </div>
+    
+                                         <div class="form-group">
+                                            <label for="price">price*</label>
+                                            <input type="number" class="form-control" id="price" name="price" required>
+                                          </div>
+                                          <div class="form-group">
+                                            <label for="priceType">priceType*</label>
+                                            <input type="text" class="form-control" id="priceType" name="priceType" required>
+                                          </div>
+                                        <div class="form-group">
+                                            <label for="name">Code*</label>
+                                            <input type="text" class="form-control" id="name"name="voucherCode">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="minSpent">Minimum Spending*</label>
+                                            <input type="number" class="form-control" id="minSpent" name="minSpent" required>
+                                          </div>
+                                          <div class="form-group">
+                                            <label for="usageLimit">Usage Limit*</label>
+                                            <input type="number" class="form-control" id="usageLimit" name="usageLimit" required>
+                                          </div>
+                                          <div class="form-group">
+                                            <label for="startTime">Start Time*</label>
+                                            <input type="datetime-local" class="form-control" id="startTime" name="startTime" required>
+                                          </div>
+                                          <div class="form-group">
+                                            <label for="endTime">End Time*</label>
+                                            <input type="datetime-local" class="form-control" id="endTime" name="endTime" required>
+                                          </div>
+                                        <div class="form-group">
+                                            <label for="message">Description *</label>
+                                            <textarea id="message" cols="30" rows="5" name="description" class="form-control"></textarea>
+                                        </div>
+                                        <div class="form-group mt-3">
+                                            <input type="submit" value="Submit" class="btn btn-primary px-3">
+                                        </div>
+                                    </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab-pane-3">
+                        <div class="row ">
+                            <div class="col-md-6">
+                                <h4 class="mb-4">1 review for "Product Name"</h4>
+                                <div class="media mb-4">
+                                    <img src="/img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
+                                    <div class="media-body">
+                                        <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
+                                        <div class="text-primary mb-2">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                            <i class="far fa-star"></i>
+                                        </div>
+                                        <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-5">
+                                <h4 class="mb-4">Create a Offer</h4>
+                                <small>Create a Offer for the products*</small>
+                                <form action="/admin/addProductOffer" method="post">
+
+                                    <div class="form-group">
+                                        <label for="category">Category:</label>
+                                        <select class="form-control" id="category" name="category" required>
+                                          <% categories.forEach(function(categoryList) { %>
+                                            <option value="<%= categoryList._id.toString() %>"><%= categoryList.title %></option>
+                                          <% }) %>
+                                        </select>
+                                      </div>    
+                                     <div class="form-group">
+                                        <label for="minSpent">name*</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                      </div>
+
+                                     <div class="form-group">
+                                        <label for="Products">Products:</label>
+                                         <select class="form-control" id="Products" name="products" required>
+                                        <% product.forEach(function(product) { %>
+                                        <option value="<%= product._id.toString() %>"> <%= product.Model %></option>
+                                        <% }) %>
+                                      </select>
+                                     </div>
+                                     <!--  -->
+                                      <div class="form-group">
+                                        <label for="priceType">Price Type*</label>
+                                        <select class="form-control" id="priceType" name="priceType" required>
+                                          <option value="percentage">Percentage</option>
+                                          <option value="fixed">Fixed</option>
+                                        </select>
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="percentageValue">Percentage Value*</label>
+                                        <input type="number" class="form-control" id="percentageValue" name="percentageValue" required placeholder="Enter percentage" min="0" max="100">
+                                      </div>
+
+                                      <div class="form-group">
+                                        <label for="price">Price*</label>
+                                        <input type="number" class="form-control" id="price" name="price" required placeholder="Enter percentage" min="0">
+                                      </div>
+
+                                    
+                                      <!--  -->
+                                    <div class="form-group">
+                                        <label for="name">Code*</label>
+                                        <input type="text" class="form-control" id="name"name="voucherCode">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="minSpent">Minimum Spending*</label>
+                                        <input type="number" class="form-control" id="minSpent" name="minSpent" required>
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="usageLimit">Usage Limit*</label>
+                                        <input type="number" class="form-control" id="usageLimit" name="usageLimit" required>
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="startTime">Start Time*</label>
+                                        <input type="datetime-local" class="form-control" id="startTime" name="startTime" required>
+                                      </div>
+                                      <div class="form-group">
+                                        <label for="endTime">End Time*</label>
+                                        <input type="datetime-local" class="form-control" id="endTime" name="endTime" required>
+                                      </div>
+                                    <div class="form-group">
+                                        <label for="message">Description *</label>
+                                        <textarea id="message" cols="30" rows="5" name="description" class="form-control"></textarea>
+                                    </div>
+                                    <div class="form-group mt-3">
+                                        <input type="submit" value="Submit" class="btn btn-primary px-3">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+      
+
+
+
+
+
+<script src="/javaScript/adminDataTable.js"></script>
+

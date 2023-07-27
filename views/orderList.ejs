@@ -1,0 +1,204 @@
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="/">Home</a>
+                <a class="breadcrumb-item text-dark" href="/">Shop</a>
+                <span class="breadcrumb-item active">Orders</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<h1 class="text-center">Your Order</h1>
+<div class="container-fluid">
+  <style>
+    .custom-shadow {
+      box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2); /* Add shadow to the div */
+      transition: box-shadow 0.5s ease; /* Add a transition effect to the shadow */
+    }
+  
+    .custom-shadow:hover {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 1); /* Shadow on hover */
+    }
+  </style>
+  <div class="row px-xl-5 ">
+    <div class="col-lg-12">
+      <% if (orderList.length === 0) { %>
+        <div class="text-center">No Orders available.</div>
+      <% } else { %>
+        <% orderList.reverse().forEach(function(order) { %>
+          <div class="mb-4">
+            <div class="row bg-light p-4 custom-shadow">
+              <% if (Array.isArray(order.product)) { %>
+                <% for (const product of order.product) { %>
+                  <div class="col-md-2 ">
+                    <img class="product-image" src="/uploads/productUpload/<%= product.itemImage %>" alt="<%= product.Model %>"width="200" height="150">
+                  </div>
+
+                  <div class="col-md-4">
+                    <div class="product-details">
+                      <div class="product-description text-truncate"><%= product.description %></div>
+                      <div class="product-price">$<%= product.Price %></div>
+                    </div>
+                  </div>
+                <% } %>
+              <% } else { %>
+                <div class="col-md-2 ">
+                  <img class="product-image" src="/uploads/productUpload/<%= order.product.itemImage %>" alt="<%= order.product.Model %>"width="200" height="150">
+                </div>
+                <div class="col-md-1">
+                  <div class="product-details">
+                    <div class="product-name"><%= order.product.Model %></div>
+
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="product-details">
+                    <div class="product-description text-truncate"><%= order.product.description %></div>
+                  </div>
+                </div>
+              <% } %>
+              <div class="col-md-3  text-center">
+                <% if (Array.isArray(order.address)) { %>
+                  <% for (const address of order.address) { %>
+                    <div class="address-details">
+                      <div class="name"><%= address.name.firstName %> <%= address.name.lastName %></div>
+                      <div class="street"><%= address.street %></div>
+                      <div class="city"><%= address.city %>, <%= address.state %> <%= address.pin %></div>
+                      <div class="landmark"><%= address.landmark %></div>
+                      <div class="address-type"><%= address.addressType %></div>
+                    </div>
+                  <% } %>
+                <% } else { %>
+                  <div class="address-details">
+                    <div class="address"><%= order.address %></div>
+                  </div>
+                <% } %>
+              </div>
+              <div class="col-md-2">
+                <div class="order-details">
+                  <div class="order-id">Order ID: <%= order.id %></div>
+                  <div class="order-date">Date: <%= order.date %></div>
+                  <div class="amount">Amount: <%= order.amount %></div>
+                  <div class="eta">ETA: <%= order.ETA %></div>
+                  <div class="payment-method">Payment Method: <%= order.paymentMethod %></div>
+                  <!-- The modal for Return action -->
+                  <div class="modal fade" id="returnModal-<%= order.id %>" tabindex="-1" role="dialog" aria-labelledby="returnModalLabel-<%= order.id %>" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="returnModalLabel-<%= order.id %>">Modal title</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <!-- Add your content for the Return modal here -->
+                          <!-- For example, you can display a form to process the return action -->
+                          <form>
+                            <!-- ... Form fields and other content ... -->
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Understood</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+
+                  <div class="payment-method">
+                    <% if (order.status === 'completed') { %>
+                      Your item has been delivered
+                    <% } else { %>
+                      Order status: <%= order.status %>
+                      <div>                  
+                        <!-- Button to trigger the Cancel modal -->
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#cancelModal-<%= order.id %>">Cancel</button>
+                                          <!-- The modal for Cancel action -->
+                  <div class="modal fade" id="cancelModal-<%= order.id %>" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel-<%= order.id %>" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="cancelModalLabel-<%= order.id %>">Modal title</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <!-- Add your content for the Cancel modal here -->
+                          <!-- For example, you can display a message or confirmation dialog -->
+                          <p>Are you sure you want to cancel this order?</p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button class="btn btn-primary modal-cancel-btn" data-order-id="<%= order.id %>">Cancel Order</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                      </div>
+                    <% } %>
+                  </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+      <% } %>
+    </div>
+  </div>
+
+  
+  
+<div class="row justify-content-center">
+    <div class="col-auto"style="width: 500px;">
+        <a href="/" class="btn btn-block btn-warning font-weight-medium my-2 py-2">Continue Shopping</a>
+    </div>
+</div>
+</div>
+
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+<script>
+  // Function to cancel an order on the frontend and send the request to the server
+  const cancelOrderFrontend = async (orderId) => {
+    console.log("orderId",orderId);
+    try {
+      const response = await fetch(`/cancelOrder/${orderId}/cancel`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Order cancelled successfully:', data);
+
+        updateProductDetails(orderId);
+      } else {
+        const errorData = await response.json();
+        console.error('Error cancelling order:', errorData.error);
+      }
+    } catch (error) {
+      console.error('An error occurred while cancelling order:', error);
+      // Handle any other errors that may occur during the fetch request
+    }
+  };
+
+  // Function to update product details on the frontend after cancelling an order
+  const updateProductDetails = (orderId) => {
+    // Implement the logic to update product quantities and total amount on the frontend
+    // For example, you can update the product quantities in the shopping cart or order details
+    // You can also update the total amount displayed on the UI if needed
+  };
+
+  // Add event listener to the Cancel button in the modal
+  document.querySelectorAll('.modal-cancel-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const orderId = btn.dataset.orderId;
+      cancelOrderFrontend(orderId);
+    });
+  });
+</script>
