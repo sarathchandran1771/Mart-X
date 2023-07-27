@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -17,16 +18,20 @@ const adminRouter = require('./routes/admin');
 const app = express();
 
 // Connect to MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/MyCart', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((err) => {
-    console.error('Error connecting to MongoDB', err);
-  });
+// mongoose.connect('mongodb://127.0.0.1:27017/MyCart', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// })
+//   .then(() => {
+//     console.log('Connected to MongoDB');
+//   })
+//   .catch((err) => {
+//     console.error('Error connecting to MongoDB', err);
+//   });
+
+mongoose
+.connect(process.env.MONGO_URL)
+.then((e)=>console.log("Mongodbbb Connecteddd"));
 
 // view engine setup
 
