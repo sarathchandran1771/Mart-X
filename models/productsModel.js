@@ -1,4 +1,3 @@
-const CategoryModel = require('../models/categoryModel');
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
