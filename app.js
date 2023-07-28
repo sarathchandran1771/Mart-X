@@ -31,7 +31,7 @@ const app = express();
 
 mongoose
 .connect(process.env.MONGO_URL)
-.then((e)=>console.log("Mongodbbb Connecteddd"));
+.then((e)=>console.log("Mongodb Connected"));
 
 // view engine setup
 
