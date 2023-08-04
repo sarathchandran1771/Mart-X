@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 const CategoryModel = require('./categoryModel');
+=======
+>>>>>>> 6494124774d2666a45aa34407c8008356c1f27f7
 const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
