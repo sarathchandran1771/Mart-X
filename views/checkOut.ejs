@@ -1,4 +1,10 @@
-   <!-- Breadcrumb Start -->
+<%- include('includes/userIncludes/userHeader.ejs') %>
+</head>
+<body>
+  <%- include('includes/userIncludes/logo.ejs') %>
+
+  <%- include('includes/userIncludes/userNav_2.ejs') %>
+  <!-- Breadcrumb Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
             <div class="col-12">
@@ -317,7 +323,13 @@
                             <h6 class="font-weight-medium">Shipping</h6>
                             <h6 class="font-weight-medium">$10</h6>
                           </div>
-                          
+                          <div class="d-flex justify-content-between">
+                            <h6 id="couponMessage"style="text-decoration: double; color: rgb(38, 245, 10);"></h6>
+                          </div>
+                          <div class="d-flex justify-content-between">
+                            <p id="discountedAmount"></p>
+                          </div>
+
                         </div>
                         <% if (couponDetails && couponDetails.voucherCode) { %>
                           <!-- Display the coupon details if a coupon is applied -->
@@ -330,7 +342,7 @@
                   <% } %>
                   <div class="pt-2">
                     <div class="d-flex justify-content-between mt-2">
-                      
+
                       <h5>Total</h5>
                       <% if (couponDetails && couponDetails.price) { %>
                         <% let discountAmount = totalPrice - couponDetails.price; %>
@@ -343,39 +355,16 @@
                   
                   <h5 class="mb-2"style="text-decoration: double; color: rgb(38, 245, 10);">Your Total Savings on this order<span class="rupee-icon"> ₹ </span> <%- totalSaving %></h5>
                   
-                  
-                    <!-- Display coupon details if a coupon is applied -->
-                
-                
-                    <!-- <form class="mb-30" action="/applycoupon" method="post">
-                      <div class="input-group">
-                        <input type="text" name="couponCode" class="form-control border-1 p-4" placeholder="Coupon Code">
-                        <div class="input-group-append">
-                          <button type="submit" class="btn" id="apply-coupon">Apply Coupon</button>
-                        </div>
-                      </div> 
-                    </form>
-                    <div>
-                      Discounted Amount: <span id="discountedAmount">Loading...</span>
-                    </div> -->
 
                     <div>
-                      Discounted Amount: <span id="discountedAmount">Loading...</span>
+
                     </div>
-                    
-                    <form class="mb-30" id="applyCouponForm">
                       <div class="input-group">
-                        <input type="text" name="couponCode" class="form-control border-1 p-4" placeholder="Coupon Code">
+                        <input type="text" name="couponCode" id="couponCode" class="form-control border-1 p-4" placeholder="Coupon Code">
                         <div class="input-group-append">
                           <button type="button" class="btn" id="apply-coupon">Apply Coupon</button>
                         </div>
                       </div>
-                    </form>
-                    
-                    <!-- Element to display the discounted amount -->
-                    
-
-                    
                     
                       <% if (successMessage) { %>
                         <div id="successAlert" class="alert alert-success" role="alert">
@@ -549,89 +538,52 @@ function verifyPayment(payment,paymentOrder){
   //});
 
 </script>
-<!--   // rahul coupon code:  -->
-<!-- <script>
-    document.getElementById('apply-coupon').addEventListener('click', applyCoupon);
-
-  function applyCoupon() {
-    const couponCode = document.querySelector('input[name="couponCode"]').value;
-      
-    fetch("/applyCoupon", {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ couponCode,totalAmount })
-      })
-      .then(response => response.json())
-      .then(data => {
-        const couponMessage = document.getElementById('couponMessage');
-        if (data.success) {
-          couponMessage.textContent = `Coupon "${couponCode}" applied successfully!`;
-          // Assuming you want to update the total amount on success
-          document.getElementById('totalAmount').textContent = 'Rs ' + data.discountedTotal.toFixed(2);
-        } else {
-          couponMessage.textContent = data.message; // Display the error message from the server
-        }
-      })
-      .catch(error => {
-        console.error('Error applying coupon:', error);
-        const couponMessage = document.getElementById('couponMessage');
-        couponMessage.textContent = `An error occurred while applying the coupon. Please try again later.`;
-      });
-    }
-  
-    </script> -->
-<!--   // rahul coupon code:  -->
-
-
 
 <!-- Your JavaScript code here (the updated applyCoupon() function) -->
+
 <script>
-  document.getElementById('apply-coupon').addEventListener('click', applyCoupon);
+    document.addEventListener("DOMContentLoaded", function() {
+      document.getElementById('apply-coupon').addEventListener('click', applyCoupon);
 
-  function applyCoupon() {
-    console.log('Button clicked. Sending AJAX request...');
+      function applyCoupon() {
+        console.log('Button clicked. Sending AJAX request...');
 
-    const couponCode = document.querySelector('input[name="couponCode"]').value;
+        const couponCode = document.querySelector('input[name="couponCode"]').value;
 
-    fetch("/applyCoupon", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ couponCode })
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Received response:', data);
-      const couponMessage = document.getElementById('couponMessage');
-      console.log('discountedTotal:', data.discountedTotal);
-      if (data.success) {
-        couponMessage.textContent = `Coupon "${couponCode}" applied successfully!`;
-        // document.getElementById('discountedAmount').textContent = 'Rs ' + data.discountedTotal.toFixed(2);
-        document.getElementById('discountedAmount').textContent = 'Rs 48900.00';
-      } else {
-        couponMessage.textContent = data.message;
+        fetch("/applyCoupon", {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ couponCode })
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Received response:', data);
+          const couponMessage = document.getElementById('couponMessage');
+          const discountedTotal = data.discountedTotal; // Assuming the server response contains the discounted total
+          console.log('discountedTotal:', discountedTotal);
+          if (data.success) {
+            couponMessage.textContent = `Coupon "${couponCode}" applied successfully!`;
+            const discountedAmountElement = document.getElementById('discountedAmount');
+            discountedAmountElement.textContent = 'Discounted Amount: Rs ' + discountedTotal.toFixed(2);
+          } else {
+            couponMessage.textContent = data.message;
+            // Clear the discounted amount if the coupon is not applied successfully
+            document.getElementById('discountedAmount').textContent = '';
+          }
+        })
+        .catch(error => {
+          console.error('Error applying coupon:', error);
+          const couponMessage = document.getElementById('couponMessage');
+          couponMessage.textContent = 'An error occurred while applying the coupon. Please try again later.';
+          // Clear the discounted amount in case of an error
+          document.getElementById('discountedAmount').textContent = '';
+        });
       }
-    })
-    .catch(error => {
-      console.error('Error applying coupon:', error);
-      const couponMessage = document.getElementById('couponMessage');
-      couponMessage.textContent = 'An error occurred while applying the coupon. Please try again later.';
     });
-  }
-</script>
+  </script>
 
 
-<!-- GPT modal -->
-
-
-<!-- <script>
-  // Add an event listener to the "Apply Coupon" button
-document.getElementById('apply-coupon').addEventListener('click', function() {
-  // Update the <span> element with a static value for testing
-  document.getElementById('discountedAmount').textContent = 'Rs 100.00';
-});
-
-</script> -->
+<%- include('includes/userIncludes/userFooter.ejs') %>
+<!-- Back to Top -->

@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.Router();
+const userRouter = express.Router();
 
 // Sample product data
 let products = [];
@@ -11,85 +11,90 @@ const User = require('../models/user');
 const userController = require('../controller/UserController/userController');
 const AuthControllers = require('../controller/AuthController/AuthController');
 const offerController = require('../controller/adminController/offerController');
-  
-
-router.get('/verifyOTP',AuthControllers.authuserGet);
-router.post('/verifyOTP', AuthControllers.authUserPost);
-
-router.post('/generateOTP', AuthControllers.authPost);
-
-router.get("/userLogin", AuthControllers.getUserLogin);
-router.post("/userLogin", AuthControllers.postLogin)
-router.post('/generateLoginOTP',AuthControllers.authLoginPost);
-router.get('/verifyLoginOTP',AuthControllers.authUserLoginGet);
-router.post('/verifyLoginOTP', AuthControllers.authUserLoginPost);
+const { errorHandler } = require('../middleware/errorHandler');
 
 
-router.get("/userSignup", AuthControllers.getUserSignup);
-router.post("/userSignup", AuthControllers.postSignup);
+userRouter.get('/verifyOTP',AuthControllers.authuserGet);
+userRouter.post('/verifyOTP', AuthControllers.authUserPost);
+
+userRouter.post('/generateOTP', AuthControllers.authPost);
+
+userRouter.get("/userLogin", AuthControllers.getUserLogin);
+userRouter.post("/userLogin", AuthControllers.postLogin)
+userRouter.post('/generateLoginOTP',AuthControllers.authLoginPost);
+userRouter.get('/verifyLoginOTP',AuthControllers.authUserLoginGet);
+userRouter.post('/verifyLoginOTP', AuthControllers.authUserLoginPost);
 
 
-router.get('/logout', AuthControllers.getLogout);
+userRouter.get("/userSignup", AuthControllers.getUserSignup);
+userRouter.post("/userSignup", AuthControllers.postSignup);
+
+
+userRouter.get('/logout', AuthControllers.getLogout);
 
 // HomePage
-router.get('/', userController.renderHomePage);
+userRouter.get('/', userController.renderHomePage);
 
 
 
 
 // detail---
-router.get('/detail', userController.renderproductPage);
+userRouter.get('/detail', userController.renderproductPage);
 
 // cart---
-router.get('/cart', userController.getCart);
+userRouter.get('/cart', userController.getCart);
 
-router.post('/cart', userController.postCart);
+userRouter.post('/cart', userController.postCart);
 
-router.post('/updateCartItem', userController.updateCartItem);
+userRouter.post('/updateCartItem', userController.updateCartItem);
 
-router.get('/delete-cartItem/:id', userController.deleteCart);
+userRouter.get('/delete-cartItem/:id', userController.deleteCart);
 
 // checkOut---
-router.get('/checkOut', userController.getCheckOut);
+userRouter.get('/checkOut', userController.getCheckOut);
 
-router.post('/checkOut', userController.postAddressSave);
+userRouter.post('/checkOut', userController.postAddressSave);
 
-router.get('/checkOut', userController.getShippingAddress);
+userRouter.get('/checkOut', userController.getShippingAddress);
 
 // ShippingAddress---
-router.post('/edit-address/:id', userController.postEditAddress);
+userRouter.post('/edit-address/:id', userController.postEditAddress);
 
-router.get('/edit-address/:id', userController.geteditAddress);
+userRouter.get('/edit-address/:id', userController.geteditAddress);
 
-router.get('/delete-address/:id', userController.deleteAddress);
+userRouter.get('/delete-address/:id', userController.deleteAddress);
 
-router.post('/saveShippingAddress', userController.postShippingAddress);
+userRouter.post('/saveShippingAddress', userController.postShippingAddress);
 
 
-router.post('/postPlaceOrder', userController.postPlaceOrder);
+userRouter.post('/postPlaceOrder', userController.postPlaceOrder);
 
 // Order_Success---
-router.get('/thankYou', userController.getThankYou);
+userRouter.get('/thankYou', userController.getThankYou);
 
 // verifyPayment
-router.get('/verifyPayment',userController.verifyPayment);
+userRouter.get('/verifyPayment',userController.verifyPayment);
 
 // orderList---
-router.get('/orderList',userController.getOrderList);
+userRouter.get('/orderList',userController.getOrderList);
 
-router.get('/UserProfile',userController.getUserProfile);
+userRouter.get('/UserProfile',userController.getUserProfile);
 
 // order cancel
-router.patch('/cancelOrder/:orderId/cancel', userController.cancelOrder);
+userRouter.patch('/cancelOrder/:orderId/cancel', userController.cancelOrder);
 
 // Route to get the updated order details after order cancellation
-router.get('/shop', userController.allProducts);
-
+userRouter.get('/shop', userController.allProducts);
 
 // coupon---
+userRouter.post('/applycoupon',offerController.applycoupon);
 
-router.post('/applycoupon',offerController.applycoupon);
+userRouter.get('/handle404Error', errorHandler, userController.handle404Error);
+
+userRouter.get('/triggerError500', userController.triggerError500);
 
 
-module.exports = router;
+module.exports = userRouter;
+
+
 

@@ -1,0 +1,115 @@
+
+    <!-- Topbar Start -->
+    <div class="container-fluid">
+
+        <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+            <div class="col-lg-4">
+                <a href="" class="text-decoration-none">
+                    <span class="h1 text-uppercase text-warning bg-dark px-2">Mart</span>
+                    <span class="h1 text-uppercase text-dark bg-warning px-2 ml-n1">X</span>
+                </a>
+            </div>
+
+            <div class="col-lg-4 col-6 text-left" id="userSide">
+                <form>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search for products or categories">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent text-primary">
+                                <i class="fa fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div id="suggestions" class="dropdown-menu" style="display: none;">
+                        <!-- Suggestions will be populated here -->
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-lg-4 col-6 text-right">
+
+                    <h6 class="Welcome-text">Welcome </h6>
+                  
+                
+                  <h6 class="Welcome-text">Welcome Guest</h6>
+          
+              </div>
+              
+              
+        </div>
+    </div>
+
+    
+
+    <script>
+        // Assuming you have already passed the productNames and categoryNames variables from the server-side template
+        if (document.getElementById('userSide')) {
+          // Parse the JSON strings back into JavaScript arrays
+          const productNames = JSON.parse('<%- productNames %>');
+          const categoryNames = JSON.parse('<%- categoryNames %>');
+      
+          const searchInput = document.getElementById('searchInput');
+          const suggestionsDiv = document.getElementById('suggestions');
+      
+          searchInput.addEventListener('keyup', function (event) {
+            const query = event.target.value.trim();
+            const filteredSuggestions = getSuggestions(query);
+            showSuggestions(filteredSuggestions);
+          });
+      
+          document.addEventListener('click', function (event) {
+            // Hide suggestions on outside click
+            if (!event.target.closest('#suggestions')) {
+              suggestionsDiv.style.display = 'none';
+            }
+          });
+      
+          function getSuggestions(query) {
+            query = query.toLowerCase();
+      
+            const productSuggestions = productNames.filter((name) => name.toLowerCase().startsWith(query));
+            const categorySuggestions = categoryNames.filter((name) => name.toLowerCase().startsWith(query));
+      
+            return [...productSuggestions, ...categorySuggestions];
+          }
+      
+          function showSuggestions(filteredSuggestions) {
+            if (filteredSuggestions.length === 0) {
+              suggestionsDiv.innerHTML = '<a class="dropdown-item disabled">No search found</a>';
+            } else {
+              suggestionsDiv.innerHTML = '';
+              filteredSuggestions.forEach((suggestion) => {
+                const suggestionItem = document.createElement('a');
+                suggestionItem.className = 'dropdown-item';
+                suggestionItem.href = '#';
+                suggestionItem.textContent = suggestion;
+                suggestionItem.addEventListener('click', function () {
+                  searchInput.value = suggestion;
+                  suggestionsDiv.style.display = 'none';
+                  renderProductDetails(suggestion);
+                });
+      
+                suggestionsDiv.appendChild(suggestionItem);
+              });
+            }
+      
+            suggestionsDiv.style.display = 'block';
+          }
+      
+          function renderProductDetails(selectedProduct) {
+            const form = document.createElement('form');
+            form.method = 'GET';
+            form.action = '/shop';
+      
+            const productNameInput = document.createElement('input');
+            productNameInput.type = 'hidden';
+            productNameInput.name = 'productName';
+            productNameInput.value = selectedProduct;
+      
+            form.appendChild(productNameInput);
+      
+            document.body.appendChild(form);
+            form.submit();
+          }
+        }
+      </script>

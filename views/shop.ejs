@@ -1,4 +1,9 @@
-    <!-- Breadcrumb Start -->
+<%- include('includes/userIncludes/userHeader.ejs') %>
+</head>
+<body>
+<%- include('includes/userIncludes/userNav_1.ejs') %>
+<%- include('includes/userIncludes/userNav_2.ejs') %>
+   <!-- Breadcrumb Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
             <div class="col-12">
@@ -118,11 +123,18 @@
                         </div>
                         <% } %>
                         <% }) %>
-                        <% } else { %>
-                          <div class="col-12">
-                            <p>No products available.</p>
-                          </div>
-                        <% } %>
+
+
+
+
+<!-- ... (your existing code) -->
+
+                  
+                  <% } else { %>
+                      <div class="col-12">
+                          <p>No products available.</p>
+                      </div>
+                  <% } %>
                     <div class="col-12">
                         <nav>
                           <ul class="pagination justify-content-center">
@@ -139,7 +151,6 @@
             <!-- Shop Product End -->
         </div>
     </div>
-    <!-- Shop End -->
+    <!-- Shop End -->  
+      <%- include('includes/userIncludes/userFooter.ejs') %>
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>

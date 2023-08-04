@@ -1,3 +1,8 @@
+<%- include('includes/userIncludes/userHeader.ejs') %>
+</head>
+<body>
+  <%- include('includes/userIncludes/logo.ejs') %>
+<%- include('includes/userIncludes/userNav_2.ejs') %>
 <div class="container-fluid">
     <div class="row px-xl-5">
         <div class="col-12">
@@ -157,9 +162,6 @@
 </div>
 </div>
 
-<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-
 <script>
   // Function to cancel an order on the frontend and send the request to the server
   const cancelOrderFrontend = async (orderId) => {
@@ -202,3 +204,6 @@
     });
   });
 </script>
+
+<%- include('includes/userIncludes/userFooter.ejs') %>
+<!-- Back to Top -->

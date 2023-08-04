@@ -1,0 +1,179 @@
+<%- include('includes/adminIncludes/adminHeader.ejs') %>
+<link rel="stylesheet" href="/stylesheets/adminTable.css">
+<link rel="stylesheet" href="/stylesheets/adminDataTable.scss">
+</head>
+<body>
+  <%- include('includes/adminIncludes/adminNav.ejs') %>
+  <%- include('includes/adminIncludes/adminSidebar.ejs') %>
+<div class="content">
+    <!-- Main Body -->
+    <div class="col-12">
+      <div class="modal" id="myModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-end">
+          <div class="modal-content">
+            <div class="modal-body">
+              <form enctype="multipart/form-data" method="POST" action="/admin/addBanner">
+                <div class="form-group">
+                    <label for="bannerImage" class="form-label">Banner Image</label>
+                    <input type="file" class="form-control" id="bannerImage" name="banner" required accept="image/*">
+                  <div id="imagePreview"></div>
+                </div>
+                <div class="form-group">
+                    <label for="bannerTitle" class="form-label">Title</label>
+                    <select class="form-control" id="bannerTitle" name="title" required>
+                        <option value="NORMAL">NORMAL</option>
+                        <option value="MAIN">MAIN</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="bannerLink" class="form-label">Link</label>
+                    <input type="text" class="form-control" id="bannerLink" name="link" required>
+                  <div id="imagePreview"></div>
+                </div>
+                <div class="form-group">
+                    <label for="bannerStartDate" class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="bannerStartDate" name="startDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="bannerEndDate" class="form-label">End Date</label>
+                    <input type="date" class="form-control" id="bannerEndDate" name="endDate" required>
+                </div>
+                
+                <!--  -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="container-fluid pt-4 px-4">
+        <button type="button" class="modal-btn" data-bs-toggle="modal" data-bs-target="#myModal">
+          Add category
+        </button>
+        <div class="bg-secondary text-center rounded p-4">
+          <h3 class="mb-4">Add Banner</h3>
+          <div class="table-responsive">
+            <table class="table text-center align-middle table-bordered table-hover mb-0" id="BannerTable">
+              <thead>
+  
+                <tr class="text-white">
+  
+                  <th scope="col">#</th>
+  
+                  <th scope="col">Banner Image</th>
+
+                  <th scope="col">Title</th>
+
+                  <th scope="col">Link</th>
+  
+                  <th scope="col">Start Date</th>
+
+                  <th scope="col">End Date</th>
+
+                  <th scope="col">Actions</th>
+
+
+                </tr>
+              </thead>
+              <tbody class="text-white">
+                <% banners.forEach(function(banner, index) { %>
+                  <tr>
+                    <th scope="row"><%= index + 1 %></th>
+                    <td>
+                      <img src="/uploads/bannerImage/<%= banner.image %>" alt="<%= banner.title %>" width="200" height="80">
+                    </td>
+                    <td><%= banner.title %></td>
+                    <td><%= banner.link %></td>
+                    <td><%= (new Date(banner.startDate)).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) %></td>
+                    <td><%= (new Date(banner.endDate)).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) %></td>
+                     
+                    
+                  <td>  
+        <!-- Edit Modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal<%= banner._id %>">Edit</button>
+        <div class="modal fade" id="editModal<%= banner._id %>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<%= banner._id %>" aria-hidden="true">
+          <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel<%= banner._id %>">Edit Banner</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form action="/admin/edit-banner/<%= banner._id %>" method="post">
+                  <div class="mb-3">
+                    <label for="bannerTitle<%= banner._id %>" class="form-label">Title</label>
+                    <select class="form-control" id="bannerTitle<%= banner._id %>" name="title" required>
+                      <option value="NORMAL" <%= banner.title === "NORMAL" ? "selected" : "" %>>NORMAL</option>
+                      <option value="MAIN" <%= banner.title === "MAIN" ? "selected" : "" %>>MAIN</option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="bannerImage<%= banner._id %>" class="form-label">Banner Image</label>
+                    <input type="file" class="form-control" id="bannerImage<%= banner._id %>" name="banner" accept="image/*">
+                    <small class="form-text text-muted">Upload a new image if you want to change the banner.</small>
+                  </div>
+                  <div class="mb-3">
+                    <label for="bannerLink<%= banner._id %>" class="form-label">Link</label>
+                    <input type="text" class="form-control" id="bannerLink<%= banner._id %>" name="link" value="<%= banner.link %>" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="bannerStartDate<%= banner._id %>" class="form-label">Start Date</label>
+                    <input type="date" class="form-control" id="bannerStartDate<%= banner._id %>" name="startDate" value="<%= banner.startDate %>" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="bannerEndDate<%= banner._id %>" class="form-label">End Date</label>
+                    <input type="date" class="form-control" id="bannerEndDate<%= banner._id %>" name="endDate" value="<%= banner.endDate %>" required>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+                      <!-- Edit Modal -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal<%= banner._id %>">Delete</button>
+                    <div class="modal fade" id="exampleModal<%= banner._id %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Confirm Remove</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            Are you sure you want to remove?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-danger" onclick="window.location.href='/admin/delete-banner/<%= banner._id %>'">Remove</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+  </div>
+
+  <script src="/javaScript/banner.js"></script>
+
+  <script src="/javaScript/adminDataTable.js"></script>
+
+  <%- include('includes/adminIncludes/adminFooter.ejs') %>
