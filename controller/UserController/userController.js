@@ -1,6 +1,6 @@
 const express = require('express');
 const session = require('express-session');
-const router = express.Router();
+const userRouter = express.Router();
 const User = require('../../models/user');
 const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types;
@@ -8,8 +8,7 @@ const ProductModel  =  require('../../models/productsModel');
 const CategoryModel = require('../../models/categoryModel');
 const couponModel = require('../../models/coupon');
 const OfferModel = require('../../models/offers');
-
-
+const BannerModel= require('../../models/banner')
 
 const { format } = require('date-fns');
 const Razorpay = require('razorpay');
@@ -18,21 +17,52 @@ var instance = new Razorpay({
   key_secret: 'jhrIwbh7rjyqsV6ixY4yCQMM',
 });
 
-router.use(session({
+userRouter.use(session({
   secret: 'your-secret-key',
   resave: false,
   saveUninitialized: true
 }));
+
+
+const getProductDetails = async (selectedProduct) => {
+  try {
+    const productDetails = await ProductModel.findOne({ Model: selectedProduct });
+    console.log("productDetails", productDetails);
+
+    return productDetails;
+  } catch (err) {
+    console.error('Error fetching product details:', err);
+    throw new Error('Server error');
+  }
+};
+
+const handleGetProductDetails = async (req, res) => {
+  try {
+    const selectedProduct = req.body.product; // Assuming the selected product name is sent in the request body
+    console.log("selectedProduct", selectedProduct);
+
+    const productDetails = await getProductDetails(selectedProduct);
+    console.log("productDetails", productDetails);
+
+    // Return the product details as JSON response
+    res.json(productDetails);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+// Endpoint to handle the AJAX request and fetch product details
+const getProductDetailsRoute = '/getProductDetails';
 
 const renderHomePage = async (req, res, next) => {
   try {
     const categories = await CategoryModel.find({});
     const products = await ProductModel.find({});
     const usercategories = await User.find({});
+    const banners = await BannerModel.find();
+console.log("banners",banners);
     const loggedInUser = req.session.username;
     const users = await User.findOne({ username: loggedInUser });
-    console.log("loggedInUser", loggedInUser);
-
     // Extract product names into an array
     const productNames = products.map(product => product.Model);
     const categoryNames = categories.map(category => category.title);
@@ -40,15 +70,14 @@ const renderHomePage = async (req, res, next) => {
       ...product.toObject(),
       id: product._id.toString(),
     }));
-
     res.render('index', {
       usercategories,
       categories,
       products: processedProducts,
-      admin: false,
       productNames: JSON.stringify(productNames),
       categoryNames: JSON.stringify(categoryNames),
     });
+    
   } catch (err) {
     next(err);
   }
@@ -56,34 +85,6 @@ const renderHomePage = async (req, res, next) => {
 
 
 
-// const renderproductPage = async (req, res, next) => {
-//   try {
-//     const categories = await CategoryModel.find({});
-//     const productId = req.query.id;
-//     const product = await ProductModel.findById(productId);
-//     if (!product) {
-//       return res.status(404).render('error', { message: 'Product not found' });
-//     }
-//     const usercategories = await User.find({});
-
-//     // Wrap the single product object in an array
-//     const products = [product];
-
-//     // Extract product names into an array (for suggestion dropdown on other pages)
-//     const productNames = products.map(product => product.Model);
-//     const categoryNames = categories.map(category => category.title);
-
-//     res.render('detail', {
-//       usercategories,
-//       categories,
-//       products,
-//       productNames: JSON.stringify(productNames), // Pass the product names to the client-side
-//       categoryNames: JSON.stringify(categoryNames),
-//     });
-//   } catch (err) {
-//     next(err);
-//   }
-// };
 
 const renderproductPage = async (req, res, next) => {
   try {
@@ -490,120 +491,6 @@ const postAddressSave = async (req, res, next) => {
 };
 
 //*************Good code******/
-// const getCheckOut = async (req, res, next) => {
-//   try {
-//     const { productId,couponCode } = req.body; 
-//     console.log("getproductId",productId);
-//     const { number } = req.session;
-//     const users = await User.find({ number: req.session.number });
-//     const user = await User.findOne({ number }).populate('address');
-//     const categories = await CategoryModel.find({});
-//     const products = await ProductModel.find({});
-
-//     if (!user) {
-//       console.log("No user");
-//       return res.redirect('/');
-//     }
-//     const cartItems = await User.aggregate([
-//       {
-//         $match: { number: number }
-//       },
-//       {
-//         $unwind: "$cart"
-//       },
-//       {
-//         $lookup: {
-//           from: "products",
-//           let: { productId: { $toObjectId: "$cart.id" } },
-//           pipeline: [
-//             {
-//               $match: {
-//                 $expr: { $eq: ["$_id", "$$productId"] }
-//               }
-//             },
-//             {
-//               $project: {
-//                 _id: 1,
-//                 SellPrice: 1,
-//                 OfferedPrice: 1,
-//                 Model:1,
-//               }
-//             }
-//           ],
-//           as: "product"
-//         }
-//       },
-//       {
-//         $project: {
-//           productID: { $arrayElemAt: ["$product._id", 0] },
-//           quantity: "$cart.quantity",
-//           SellPrice: { $arrayElemAt: ["$product.SellPrice", 0] },
-//           OfferedPrice: { $arrayElemAt: ["$product.OfferedPrice", 0] },
-//           Model: { $arrayElemAt: ["$product.Model", 0] },
-//           cartSellPrice: "$cart.SellPrice",
-//           cartOfferedPrice: "$cart.OfferedPrice",
-//           amount: { $multiply: ["$cart.quantity", "$cart.SellPrice"] }
-//         }
-//       },
-
-//     ]);
-
-//     for (const cartItem of cartItems) {
-//       const productIdsInCart = [cartItem.productID];
-//       const offer = await OfferModel.findOne({ products: { $in: productIdsInCart } });
-    
-//       if (offer) {
-//         // Apply offer reduction to the cart item's product price
-//         const productPrice = cartItem.SellPrice;
-    
-//         if (offer.priceType === 'percentage') {
-//           const reducedPrice = productPrice - (offer.price / 100) * productPrice;
-//           // cartItem.product.SellPrice = reducedPrice;
-//           cartItem.reducedSellPrice = reducedPrice;
-//         } else if (offer.priceType === 'fixed') {
-//           const reducedPrice = productPrice - offer.price;
-//           // cartItem.product.SellPrice = reducedPrice;
-//           cartItem.reducedSellPrice = reducedPrice;
-//         } else {
-//           // Handle invalid price types here
-//           console.log('Invalid price type in offer.');
-//           cartItem.reducedSellPrice = productPrice;
-//         }
-//       } else {
-//         // If no offer is found, set the reducedSellPrice to the original SellPrice
-//         cartItem.reducedSellPrice = cartItem.OfferedPrice;
-//       }
-//     }
-//     const selectedAddress = user.address.id(user.shipping.shippingAddress);
-//     const address = user.address;
-//     const productNames = products.map(product => product.Model);
-//     const categoryNames = categories.map(category => category.title);
-//     const couponDetails = await couponModel.findOne({ voucherCode: couponCode });
-//     const successMessage = req.flash('success');
-
-//     res.render('checkOut', {
-//       selectedAddress: selectedAddress,
-//       address: address,
-//       admin: false,
-//       users: users,
-//       cartItems: cartItems.length > 0 ? cartItems[0].cartItems : [],
-//       totalAmount: cartItems.length > 0 ? cartItems[0].totalAmount : 0,
-//       productId,
-//       productNames: JSON.stringify(productNames),
-//       categoryNames: JSON.stringify(categoryNames),
-//       successMessage: successMessage, 
-//       cartItems: cartItems,
-//       couponDetails: couponDetails,
-//     });
-//   } catch (err) {
-//     console.log(err);
-//     res.redirect('/checkOut');
-//   }
-// };
-
-
-
-//*************Good code******/
 
 const getCheckOut = async (req, res, next) => {
   try {
@@ -612,8 +499,6 @@ const getCheckOut = async (req, res, next) => {
     const { number } = req.session;
     const users = await User.find({ number: req.session.number });
     const user = await User.findOne({ number }).populate('address');
-    const categories = await CategoryModel.find({});
-    const products = await ProductModel.find({});
 
     if (!user) {
       console.log("No user");
@@ -691,8 +576,6 @@ const getCheckOut = async (req, res, next) => {
     }
     const selectedAddress = user.address.id(user.shipping.shippingAddress);
     const address = user.address;
-    const productNames = products.map(product => product.Model);
-    const categoryNames = categories.map(category => category.title);
     const couponDetails = await couponModel.findOne({ voucherCode: couponCode });
     const successMessage = req.flash('success');
 
@@ -704,8 +587,6 @@ const getCheckOut = async (req, res, next) => {
       cartItems: cartItems.length > 0 ? cartItems[0].cartItems : [],
       totalAmount: cartItems.length > 0 ? cartItems[0].totalAmount : 0,
       productId,
-      productNames: JSON.stringify(productNames),
-      categoryNames: JSON.stringify(categoryNames),
       successMessage: successMessage, 
       cartItems: cartItems,
       couponDetails: couponDetails,
@@ -1744,8 +1625,23 @@ const allProducts = async (req, res, next) => {
   }
 };
 
+// Route to trigger a 500 error (if needed)
+const triggerError500 = (req, res, next) => {
+  try {
+    throw new Error('This is a simulated 500 error');
+  } catch (err) {
+    next(err);
+  }
+};
+
+// errorHandlers.js
+const handle404Error = (req, res, next) => {
+  res.status(404).render('server404');
+};
+
 
 module.exports = { 
+  handle404Error,
   renderHomePage,renderproductPage,
   getCart, getCheckOut,
   postCart,deleteCart,
@@ -1757,5 +1653,7 @@ module.exports = {
   verifyPayment,getOrderList,
   getUserProfile, 
   cancelOrder,
-  allProducts
+  allProducts,
+  triggerError500,
+  handleGetProductDetails, getProductDetailsRoute
 };

@@ -1,41 +1,34 @@
-require("dotenv").config()
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const multer = require('multer');
+const multer = require('multer'); 
 const flash = require('connect-flash');
 const session = require('express-session');
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
-const expressLayouts = require('express-ejs-layouts');
 const bodyParser = require('body-parser');
-
-
+const { errorHandler } = require('./middleware/errorHandler');
 const indexRouter = require('./routes/index');
 const adminRouter = require('./routes/admin');
 
 const app = express();
 
+const MONGO_URL = 'mongodb+srv://MartX:MartX@mart-x.cpejvr5.mongodb.net/MyCart?retryWrites=true&w=majority';
 // Connect to MongoDB
-// mongoose.connect('mongodb://127.0.0.1:27017/MyCart', {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// })
-//   .then(() => {
-//     console.log('Connected to MongoDB');
-//   })
-//   .catch((err) => {
-//     console.error('Error connecting to MongoDB', err);
-//   });
-
-mongoose
-.connect(process.env.MONGO_URL)
-.then((e)=>console.log("Mongodb Connected"));
+mongoose.connect(MONGO_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB', err);
+  });
 
 // view engine setup
 
-app.use(expressLayouts);
 app.set('views', path.join(__dirname, 'views'));
 app.use('/admin/lib', express.static(path.join(__dirname, 'public/lib')));
 app.set('view engine', 'ejs');

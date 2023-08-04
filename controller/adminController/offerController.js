@@ -134,107 +134,215 @@ const getAdminCoupon = async (req, res, next) => {
     }
   };
 
+const applycoupon = async (req, res, next) => {
+  try {
+    const enteredCouponCode = req.body.couponCode;
+    const { number } = req.session;
+    console.log("couponCode", enteredCouponCode);
+    const users = await User.find({ number: req.session.number });
+    const dbCoupon = await couponModel.findOne({ voucherCode: enteredCouponCode });
 
-
-  const applycoupon = async (req, res, next) => {
-    try {
-      const enteredCouponCode = req.body.couponCode;
-      const { number } = req.session;
-      console.log("couponCode", enteredCouponCode);
-      const users = await User.find({ number: req.session.number });
-      const dbCoupon = await couponModel.findOne({ voucherCode: enteredCouponCode });
-
-      if (!users) {
-        // User not found
-        return res.redirect('/');
-      }
-      const cartItems = await User.aggregate([
-        {
-          $match: { number: number }
-        },
-        {
-          $unwind: "$cart"
-        },
-        {
-          $lookup: {
-            from: "products",
-            let: { productId: { $toObjectId: "$cart.id" } },
-            pipeline: [
-              {
-                $match: {
-                  $expr: { $eq: ["$_id", "$$productId"] }
-                }
-              },
-              {
-                $project: {
-                  _id: 1,
-                  SellPrice: 1,
-                  OfferedPrice: 1,
-                  cartSellPrice:1,
-                  cartOfferedPrice:1,
-                }
-              }
-            ],
-            as: "product"
-          }
-        },
-        {
-          $project: {
-            productID: { $arrayElemAt: ["$product._id", 0] },
-            quantity: "$cart.quantity",
-            SellPrice: { $arrayElemAt: ["$product.SellPrice", 0] },
-            OfferedPrice: { $arrayElemAt: ["$product.OfferedPrice", 0] },
-            cartSellPrice: "$cart.SellPrice",
-            cartOfferedPrice: "$cart.OfferedPrice",
-          }
-        },
-  
-      ]);
-      let productOfferedPrice
-      let productquantity
-      for (const cartItem of cartItems) {
-        productOfferedPrice = cartItem.OfferedPrice;
-        productquantity = cartItem.quantity
-       console.log("reducedOfferedPrice:", productOfferedPrice);
-       console.log("cartItems:", cartItem);
-      }
-
-      if (!dbCoupon) {
-        console.log("Coupon not found");
-        return res.json({ success: false, message: "Invalid coupon code. Please try again." });
-      }
-
-      // if (users.usedCoupons.includes(dbCoupon._id)) {
-      //   console.log("Coupon has already been used.");
-      //   return res.json({ success: false, message: "Coupon has already been used." });
-      // }
-
-      const now =new Date()
-      
-      if (now > dbCoupon.endDate) {
-        return res.json({ success: false, message: 'Coupon has expired.' });
-      }
-
-      const discountPrice = dbCoupon.price;
-      const totalAmount = productOfferedPrice * productquantity;
-      const discountAmount = (totalAmount - discountPrice)
-      const discountedTotal = discountAmount;
-  
-      console.log("Discounted total:", discountedTotal);
-      if (totalAmount < 10000) {
-        console.log("Total amount should be at least 1000 to apply the coupon");
-        return res.json({ success: false, message: "Total amount should be at least 1000 to apply the coupon" });
-      }
-    //   users.usedCoupons.push(dbCoupon._id);
-    // await users.save();
-  
-      return res.json({ success: true, discountedTotal,cartItems:cartItems });
-  
-    } catch (error) {
-      console.error("Error applying coupon:", error);
-      return res.json({ success: false, message: "An error occurred while applying the coupon. Please try again later." });
+    if (!users) {
+      // User not found
+      return res.redirect('/');
     }
-  };
+
+    // Fetch the cart items along with the relevant product details
+    const cartItems = await User.aggregate([
+      {
+        $match: { number: number }
+      },
+      {
+        $unwind: "$cart"
+      },
+      {
+        $lookup: {
+          from: "products",
+          let: { productId: { $toObjectId: "$cart.id" } },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$_id", "$$productId"] }
+              }
+            },
+            {
+              $project: {
+                _id: 1,
+                SellPrice: 1,
+                OfferedPrice: 1,
+              }
+            }
+          ],
+          as: "product"
+        }
+      },
+      {
+        $project: {
+          productID: { $arrayElemAt: ["$product._id", 0] },
+          quantity: "$cart.quantity",
+          SellPrice: { $arrayElemAt: ["$product.SellPrice", 0] },
+          OfferedPrice: { $arrayElemAt: ["$product.OfferedPrice", 0] }
+        }
+      },
+    ]);
+
+    // Apply offers to cart items
+    for (const cartItem of cartItems) {
+      const productIdsInCart = [cartItem.productID];
+      const offer = await OfferModel.findOne({ products: { $in: productIdsInCart } });
+
+      if (offer) {
+        const productPrice = cartItem.SellPrice;
+
+        if (offer.priceType === 'percentage') {
+          const reducedPrice = productPrice - (offer.price / 100) * productPrice;
+          cartItem.productOfferedPrice = reducedPrice;
+        } else if (offer.priceType === 'fixed') {
+          const reducedPrice = productPrice - offer.price;
+          cartItem.productOfferedPrice = reducedPrice;
+        } else {
+          // Handle invalid price types here
+          console.log('Invalid price type in offer.');
+          cartItem.productOfferedPrice = productPrice;
+        }
+      } else {
+        // If no offer is found, set the productOfferedPrice to the original OfferedPrice
+        cartItem.productOfferedPrice = cartItem.OfferedPrice;
+      }
+    }
+
+    // Now that we have the updated cart items with the correct productOfferedPrice, we can calculate the discounted total.
+    let discountedTotal = 0;
+    for (const cartItem of cartItems) {
+      discountedTotal += cartItem.productOfferedPrice * cartItem.quantity;
+    }
+
+    // Apply the coupon discount to the discounted total
+    if (!dbCoupon) {
+      console.log("Coupon not found");
+      return res.json({ success: false, message: "Invalid coupon code. Please try again." });
+    }
+
+    const now = new Date();
+
+    if (now > dbCoupon.endDate) {
+      return res.json({ success: false, message: 'Coupon has expired.' });
+    }
+
+    const discountPrice = dbCoupon.price;
+    const totalAmount = discountedTotal;
+    const discountAmount = totalAmount - discountPrice;
+
+    // Check if the total amount is greater than or equal to 1000
+    if (totalAmount < 1000) {
+      console.log("Total amount should be at least 1000 to apply the coupon");
+      return res.json({ success: false, message: "Total amount should be at least 1000 to apply the coupon" });
+    }
+
+    // Return the success response with the discounted total and the cart items
+    return res.json({ success: true, discountedTotal, cartItems });
+
+  } catch (error) {
+    console.error("Error applying coupon:", error);
+    return res.json({ success: false, message: "An error occurred while applying the coupon. Please try again later." });
+  }
+};
+
+
+  // const applycoupon = async (req, res, next) => {
+  //   try {
+  //     const enteredCouponCode = req.body.couponCode;
+  //     const { number } = req.session;
+  //     console.log("couponCode", enteredCouponCode);
+  //     const users = await User.find({ number: req.session.number });
+  //     const dbCoupon = await couponModel.findOne({ voucherCode: enteredCouponCode });
+
+  //     if (!users) {
+  //       // User not found
+  //       return res.redirect('/');
+  //     }
+  //     const cartItems = await User.aggregate([
+  //       {
+  //         $match: { number: number }
+  //       },
+  //       {
+  //         $unwind: "$cart"
+  //       },
+  //       {
+  //         $lookup: {
+  //           from: "products",
+  //           let: { productId: { $toObjectId: "$cart.id" } },
+  //           pipeline: [
+  //             {
+  //               $match: {
+  //                 $expr: { $eq: ["$_id", "$$productId"] }
+  //               }
+  //             },
+  //             {
+  //               $project: {
+  //                 _id: 1,
+  //                 SellPrice: 1,
+  //                 OfferedPrice: 1,
+  //                 cartSellPrice:1,
+  //                 cartOfferedPrice:1,
+  //               }
+  //             }
+  //           ],
+  //           as: "product"
+  //         }
+  //       },
+  //       {
+  //         $project: {
+  //           productID: { $arrayElemAt: ["$product._id", 0] },
+  //           quantity: "$cart.quantity",
+  //           SellPrice: { $arrayElemAt: ["$product.SellPrice", 0] },
+  //           OfferedPrice: { $arrayElemAt: ["$product.OfferedPrice", 0] },
+  //           cartSellPrice: "$cart.SellPrice",
+  //           cartOfferedPrice: "$cart.OfferedPrice",
+  //         }
+  //       },
+  
+  //     ]);
+  //     let productOfferedPrice
+  //     let productquantity
+  //     for (const cartItem of cartItems) {
+  //       productOfferedPrice = cartItem.OfferedPrice;
+  //       productquantity = cartItem.quantity
+  //      console.log("reducedOfferedPrice:", productOfferedPrice);
+  //      console.log("cartItems:", cartItem);
+  //     }
+
+  //     if (!dbCoupon) {
+  //       console.log("Coupon not found");
+  //       return res.json({ success: false, message: "Invalid coupon code. Please try again." });
+  //     }
+
+  //     const now =new Date()
+      
+  //     if (now > dbCoupon.endDate) {
+  //       return res.json({ success: false, message: 'Coupon has expired.' });
+  //     }
+
+  //     const discountPrice = dbCoupon.price;
+  //     const totalAmount = productOfferedPrice * productquantity;
+  //     const discountAmount = (totalAmount - discountPrice)
+  //     const discountedTotal = discountAmount;
+  
+  //     console.log("Discounted total:", discountedTotal);
+  //     if (totalAmount < 10000) {
+  //       console.log("Total amount should be at least 1000 to apply the coupon");
+  //       return res.json({ success: false, message: "Total amount should be at least 1000 to apply the coupon" });
+  //     }
+  //   //   users.usedCoupons.push(dbCoupon._id);
+  //   // await users.save();
+  
+  //     return res.json({ success: true, discountedTotal,cartItems:cartItems });
+  
+  //   } catch (error) {
+  //     console.error("Error applying coupon:", error);
+  //     return res.json({ success: false, message: "An error occurred while applying the coupon. Please try again later." });
+  //   }
+  // };
 
   // const Coupon = async (req, res, next) => {
   //     try {
@@ -339,10 +447,6 @@ const getAdminCoupon = async (req, res, next) => {
       try {
         const productId = req.query.productId;
         const product = await ProductModel.findById(productId);
-    
-        // Assuming you have a function to calculate the total amount for the order
-        // based on the product details or other factors
-        // Replace 'calculateTotalAmount' with the actual function that calculates the total amount
         const totalAmount = calculateTotalAmount(product);
     
         const offer = await OfferModel.findOne({
@@ -360,8 +464,7 @@ const getAdminCoupon = async (req, res, next) => {
             newTotalAmount = totalAmount - discountAmount;
           } else {
             newTotalAmount = totalAmount - offer.price;
-          }
-    
+          } 
           // Respond with the new total amount
           res.json({ newTotalAmount: newTotalAmount.toFixed(2) });
         } else {

@@ -1,9 +1,10 @@
 const express = require('express');
 const session = require('express-session');
-const router = express.Router();
+const adminRouter = express.Router();
 const User = require('../../models/user');
 const ProductModel  =  require('../../models/productsModel');
 const CategoryModel = require('../../models/categoryModel');
+const BannerModel= require('../../models/banner')
 const croppie= require('croppie')
 const { format } = require('date-fns');
 const PDFDocument = require('pdfkit');
@@ -11,18 +12,27 @@ const fs = require('fs');
 const { log } = require('console');
 
 
+adminRouter.use(session({
+  secret: 'your-secret-key',
+  resave: false,
+  saveUninitialized: true
+}));
+
 const getIndex = async (req, res, next) => {
   try {
-    res.render('signin', {layout:"admin_Layout",adminIndex:false, successMessage: req.flash('success'), errorMessage: req.flash('error') });
+    res.render('signin', {successMessage: req.flash('success'), errorMessage: req.flash('error') });
   } catch (err) {
-    console.log(err);
+
+    console.log("the getIndex hits",err);
   }
 };
 
 
 const getLogin = (req, res) => {
 
-  res.render("signin",{layout:"admin_Layout",adminIndex:false})
+  console.log("the getLogin hits",res);
+
+  res.render("signin")
 };
 const postIndex = async(req, res, next) => {
   try {
@@ -297,7 +307,6 @@ const getEditProduct = async (req, res, next) => {
 
 const posteditCategory = async (req, res, next) => {
   try {
-    console.log(req.body);
     const productId = req.params.id;
     const { title, icon } = req.body;
     const updatedProduct = { title, icon };
@@ -808,6 +817,116 @@ const handleDownloadSalesReportPDF = async (req, res, next) => {
   }
 };
 
+// Set up Multer storage to define the destination and filename for the uploaded image
+
+// POST request to add a new banner
+const postBanner = async (req, res) => {
+  try {
+      const { title, link, startDate, endDate } = req.body;
+      const imageUrl = req.file.filename
+
+      // Ensure that the title value is either 'MAIN' or 'NORMAL'
+      if (!['MAIN', 'NORMAL'].includes(title)) {
+          return res.status(400).json({ message: 'Invalid title value' });
+      }
+
+      const newBanner = new BannerModel({
+          title,
+          image: imageUrl,
+          link,
+          startDate,
+          endDate,
+      });
+
+      // Save the new banner to the database
+      const savedBanner = await newBanner.save();
+
+     res.redirect("/addBanner");
+  } catch (error) {
+      console.error('Error adding new banner:', error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+
+
+
+const getBanner = async (req, res) => {
+try {
+  const banners = await BannerModel.find();
+  res.render("addBanner", { banners });
+} catch (error) {
+  console.log(error.message);
+  res.status(500).json({ message: 'Internal server error' });
+}
+};
+
+
+const postEdit= async (req, res) => {
+try {
+  const bannerId = req.params.id
+
+  const { 
+    title, 
+    link, 
+    startDate, 
+    endDate 
+  } = req.body;
+  const updatedBanner = {
+    title,
+    image: imageUrl,
+    link,
+    startDate,
+    endDate,
+  };
+  // Find the banner by ID and update its data
+  const updatedBannerData = await BannerModel.findByIdAndUpdate(bannerId, updatedBanner);
+  console.log("banners",updatedBannerData)
+
+  if (!updatedBannerData) {
+    req.flash('error', 'Product not found');
+  } else {
+    req.flash('success', 'Product updated successfully!');
+  }
+
+    res.redirect("/admin/addBanner");
+} catch (error) {
+  console.error('Error updating banner:', error);
+  res.status(500).json({ message: 'Internal server error' });
+}
+};
+
+
+// DELETE THE BANNER
+
+const deleteBanner = async (req, res) => {
+  try {
+      const bannerId = req.params.id;
+      console.log("bannerId0",bannerId);
+      const deletedBanner = await BannerModel.deleteOne({_id:bannerId});
+
+      if (deletedBanner.deletedCount === 0) {
+        return res.status(404).json({ message: 'Banner not found' });
+      } else {
+        req.flash('success', 'Product deleted successfully!');
+      }
+  
+      res.redirect('/admin/addBanner');
+    } catch (error) {
+      console.error('Error deleting banner:', error);
+      res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+}
+
+// Route to trigger a 500 error (if needed)
+const triggerError500 = (req, res, next) => {
+  try {
+    res.status(500).render('server500');
+  } catch (err) {
+    next(err);
+  }
+};
 
   module.exports = {
     getLogin, postIndex,
@@ -822,5 +941,10 @@ const handleDownloadSalesReportPDF = async (req, res, next) => {
     getUserdetails,postUserDetails,
     updateUsertatus,updateOrderStatus,
     downloadSalesReportPDF,handleDownloadSalesReportPDF,
-    adminSortSalesData
+    adminSortSalesData,
+    getBanner,
+    postBanner,
+    postEdit,
+    deleteBanner,
+    triggerError500
    };

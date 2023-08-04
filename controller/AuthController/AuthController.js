@@ -3,7 +3,9 @@ const session = require('express-session');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const accountSid = "ACf15b330146c8ba15b1ac9a7b1411d2a9";
-const authToken = "3e9bc044c74b964f5ee13d05d7df92b6";
+// const authToken = "3e9bc044c74b964f5ee13d05d7df92b6";
+const authToken = "749558d7b91a17bd7ef75c969383494e";
+
 const client = require("twilio")(accountSid, authToken);
 const User = require('../../models/user');
 const ProductModel  =  require('../../models/productsModel');
@@ -19,7 +21,8 @@ router.use(session({
 
 const authPost = async (req, res) => {
   try {
-    const generatedOTP = Math.floor(Math.random() * 8999 + 1000);
+    // const generatedOTP = Math.floor(Math.random() * 8999 + 1000);
+    const generatedOTP = 8520;
     req.session.OTP = generatedOTP;
     console.log("OTP from /:", req.session.OTP);
     const username =  req.body.username;
@@ -28,11 +31,11 @@ const authPost = async (req, res) => {
     req.session.number = phoneNumber
     console.log("phoneNumber", phoneNumber);
  
-    // await client.messages.create({
-    //   body: `Your OTP verification for MartX.com is ${generatedOTP}`,
-    //   to: phoneNumber,
-    //   from: "+14177945664",
-    // });
+    await client.messages.create({
+      body: `Your OTP verification for MartX.com is ${generatedOTP}`,
+      to: phoneNumber,
+      from: "+14177945664",
+    });
     req.session.storedOTP = generatedOTP;
 
     res.redirect('/verifyOTP');
@@ -128,7 +131,8 @@ const postSignup = async (req, res) => {
 
 const authLoginPost = async (req, res) => {
   try {
-    const generatedOTP = Math.floor(Math.random() * 8999 + 1000);
+    // const generatedOTP = Math.floor(Math.random() * 8999 + 1000);
+    const generatedOTP = 8520;
     req.session.OTP = generatedOTP;
     console.log("OTP from /:", req.session.OTP);
     const username =  req.body.username;
@@ -138,11 +142,11 @@ const authLoginPost = async (req, res) => {
     console.log("phoneNumber", phoneNumber);
 
 
-    // await client.messages.create({
-    //   body: `Your OTP verification for MartX.com is ${generatedOTP}`,
-    //   to: phoneNumber,
-    //   from: "+14177945664",
-    // });
+    await client.messages.create({
+      body: `Your OTP verification for MartX.com is ${generatedOTP}`,
+      to: phoneNumber,
+      from: "+14177945664",
+    });
     req.session.storedOTP = generatedOTP;
 
     res.redirect('/verifyLoginOTP');
