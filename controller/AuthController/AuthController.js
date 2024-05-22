@@ -3,14 +3,7 @@ const session = require('express-session');
 const router = express.Router();
 require('dotenv').config();
 
-// const accountSid = "AC3264fb3d6de096b63b269955287ade71";
-// const authToken = '83e07edc98960f1f85eca8a6554157b9';
-
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-
-console.log('TWILIO_ACCOUNT_SID:', process.env.TWILIO_ACCOUNT_SID);
-console.log('TWILIO_AUTH_TOKEN:', process.env.TWILIO_AUTH_TOKEN);
+//tokens
 
 const client = require('twilio')(accountSid, authToken);
 const User = require('../../models/user');
