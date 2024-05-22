@@ -2,50 +2,56 @@
 </head>
 <body>
 
- <div class="container-fluid position-relative d-flex p-0">
-      <div class="container-fluid">
-        <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
-            <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
-                <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <a href="/" class="">
-                            <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>MartX</h3>
-                        </a>
-                        <h3>Sign In</h3>
-                    </div>
-                   <form action="/userSignup" method="post"> 
+  <div class="container-fluid position-relative d-flex p-0">
+    <div class="container-fluid">
+      <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
+          <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+            <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <a href="index.html" class="">
+                    <h3 class="text-Dark"><i class="fa fa-user-edit me-2"></i>MartX</h3>
+                  </a>
+                  <h3>SignUp</h3>
+                </div>
+                <form action="/generateOTP" method="post">
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="floatingInput" name="username" placeholder="Username" style="width: 100%;">
                     <label for="floatingInput">Username</label>
-                    <div class="form-floating mb-3">   
-                    <input type="text" class="form-control" id="floatingInput"name="username" placeholder="username" >
-                </div>
-                <label for="floatingPassword">Password</label>
-                <div class="form-floating mb-4">
-                    <input type="password" class="form-control" id="floatingPassword" name="password" placeholder="Password" > 
-                </div>
-                <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <input type="tel" class="form-control" id="floatingNumber" placeholder="+91630" name="number" style="width: 100%;">
+                    <label for="floatingNumber">Phone Number</label>
+                  </div>
+                  <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Verify</button>
                 </form>
-                
-                <button type="button" class="btn btn-primary py-3 w-100 mb-4" data-bs-toggle="modal" data-bs-target="#loginModal">
-                  Login using OTP
-                </button>
-            </div>
-
-            </div>
-        </div>
-    </div>
+                <form action="/verifyOTP" method="post">
+                  <label for="floatingOTP">OTP</label>
+                  <div class="form-floating mb-3">
+                    
+                    <div class="d-flex justify-content-center">
+                      <input type="number" name="otp" id="ist" placeholder="1" maxlength="1" min="0" max="9" onkeyup="clickEvent(this,'sec')" onclick="stopPropagation(event)">
+                      <input type="number" name="otp" id="sec" placeholder="1" maxlength="1" min="0" max="9" onkeyup="clickEvent(this,'third')" onclick="stopPropagation(event)">
+                      <input type="number" name="otp" id="third" placeholder="1" maxlength="1" min="0" max="9" onkeyup="clickEvent(this,'fourth')" onclick="stopPropagation(event)">
+                      <input type="number" name="otp" id="fourth" placeholder="1" maxlength="1" min="0" max="9" onkeyup="clickEvent(this,'fifth')" onclick="stopPropagation(event)">
+                    </div>
+                    
+                  </div>
+                  <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Submit</button>
+                </form>
+              </div>
+          </div>
+      </div>
   </div>
-
-
+</div>
 
  <!-- Button to trigger the modal  -->
 
-
 <!-- Modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="loginModalLabel">Login</h5>
+        <h5 class="modal-title" id="loginModalLabel">SignUp</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -57,7 +63,7 @@
                   <a href="index.html" class="">
                     <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>MartX</h3>
                   </a>
-                  <h3>Login</h3>
+                  <h3>SignUp</h3>
                 </div>
                 <form action="/generateOTP" method="post">
                   
@@ -91,14 +97,9 @@
       </div>
     </div>
   </div>
-</div>
-
-
-
+</div> -->
 
         <!-- Sign Up End -->
-
-        <script src="/javaScript/user.js"></script>
-        
+        <script src="/javaScript/user.js"></script>    
         <%- include('includes/userIncludes/userFooter.ejs') %>
         <!-- Back to Top -->

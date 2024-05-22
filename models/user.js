@@ -9,6 +9,7 @@
       unique: true,
     },
     storedOTP: String,
+        
     isAdmin: { type: Boolean, default: false },
     category: {
       type: Schema.Types.ObjectId,

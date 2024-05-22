@@ -1,0 +1,124 @@
+[{
+  "_id": {
+    "$oid": "64cb84f2665bc4493d0d0924"
+  },
+  "title": "MAIN",
+  "image": "1691059442727.galaxy-s23-highlights-performance-kv.jpg",
+  "link": "shop",
+  "startDate": {
+    "$date": "2023-03-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2023-04-01T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64cbbdca665bc4493d0d0949"
+  },
+  "title": "NORMAL",
+  "image": "1691073994805.giphy3.gif",
+  "link": "Iphone",
+  "startDate": {
+    "$date": "2023-08-03T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2023-09-01T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64cbc3880744123142e343eb"
+  },
+  "title": "MAIN",
+  "image": "1691075464042.redmi.gif",
+  "link": "samsung",
+  "startDate": {
+    "$date": "2023-08-03T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2023-09-01T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64cbc55d41700742042ce06f"
+  },
+  "title": "MAIN",
+  "image": "1691075933229.samsung.gif",
+  "link": "samsung",
+  "startDate": {
+    "$date": "2023-08-03T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2023-09-01T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64cbc8e51770aa8143bcefd7"
+  },
+  "title": "MAIN",
+  "image": "1691076836745.Nikon giphy.gif",
+  "link": "Nikon",
+  "startDate": {
+    "$date": "2023-08-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": {
+      "$numberLong": "-55101168000000"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64cbc9a051410860fc3c5344"
+  },
+  "title": "MAIN",
+  "image": "1691077023691.canon HD giphy.gif",
+  "link": "canon",
+  "startDate": {
+    "$date": "2023-08-01T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": {
+      "$numberLong": "-55101168000000"
+    }
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64cbfe55d9b30f5b64156655"
+  },
+  "title": "NORMAL",
+  "image": "1691090517272.D85639592_WLD_Samsung_SSGGalaxyFest_Hero_1242x450_2.jpg",
+  "link": "shop",
+  "startDate": {
+    "$date": "2023-08-03T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2023-10-02T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64cbfe93d9b30f5b64156658"
+  },
+  "title": "NORMAL",
+  "image": "1691090579763.galaxy-s23-highlights-kv.avif",
+  "link": "samsung",
+  "startDate": {
+    "$date": "2023-08-03T00:00:00.000Z"
+  },
+  "endDate": {
+    "$date": "2023-10-02T00:00:00.000Z"
+  },
+  "__v": 0
+}]

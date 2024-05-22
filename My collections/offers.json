@@ -1,0 +1,78 @@
+[{
+  "_id": {
+    "$oid": "64b40856d09bcdeefe0f6999"
+  },
+  "category": {
+    "$oid": "648f0776ac431ea9c0b99977"
+  },
+  "products": [
+    {
+      "$oid": "6490cab50572b32e4839e640"
+    }
+  ],
+  "name": "dfsf",
+  "price": 1000,
+  "priceType": "fixed",
+  "minSpent": 1000,
+  "usageLimit": 140,
+  "voucherCode": "ES100",
+  "startTime": {
+    "$date": "2023-07-16T06:30:00.000Z"
+  },
+  "endTime": {
+    "$date": "2023-07-27T06:30:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64ba2d4175b34d0057dd4abd"
+  },
+  "category": {
+    "$oid": "648f0776ac431ea9c0b99977"
+  },
+  "products": [
+    {
+      "$oid": "6490cd850572b32e4839e66a"
+    }
+  ],
+  "name": "IPhone Mega Offer",
+  "price": 1250,
+  "priceType": "fixed",
+  "minSpent": 50000,
+  "usageLimit": 10,
+  "voucherCode": "ES1250",
+  "startTime": {
+    "$date": "2023-07-21T06:30:00.000Z"
+  },
+  "endTime": {
+    "$date": "2023-07-27T23:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64bac3aa3954ad7e091d1aae"
+  },
+  "category": {
+    "$oid": "648f14f6ac431ea9c0b999b9"
+  },
+  "products": [
+    {
+      "$oid": "6490ccd70572b32e4839e65f"
+    }
+  ],
+  "name": "Buy this product & get 50% Flat off ",
+  "price": 50,
+  "priceType": "percentage",
+  "minSpent": 150,
+  "usageLimit": 10,
+  "voucherCode": "FLAT50",
+  "startTime": {
+    "$date": "2023-07-21T17:30:00.000Z"
+  },
+  "endTime": {
+    "$date": "2023-07-25T10:30:00.000Z"
+  },
+  "__v": 0
+}]

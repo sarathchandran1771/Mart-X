@@ -1,22 +1,13 @@
 const express = require('express');
 const session = require('express-session');
 const router = express.Router();
-require('dotenv').config();
-
-// const accountSid = "AC3264fb3d6de096b63b269955287ade71";
-// const authToken = '83e07edc98960f1f85eca8a6554157b9';
-
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-
-console.log('TWILIO_ACCOUNT_SID:', process.env.TWILIO_ACCOUNT_SID);
-console.log('TWILIO_AUTH_TOKEN:', process.env.TWILIO_AUTH_TOKEN);
-
-const client = require('twilio')(accountSid, authToken);
+const jwt = require('jsonwebtoken');
+const accountSid = "ACf15b330146c8ba15b1ac9a7b1411d2a9";
+const authToken = "3e9bc044c74b964f5ee13d05d7df92b6";
+const client = require("twilio")(accountSid, authToken);
 const User = require('../../models/user');
 const ProductModel  =  require('../../models/productsModel');
 const CategoryModel = require('../../models/categoryModel');
-
 
 router.use(session({
   secret: 'your-secret-key',
@@ -28,7 +19,6 @@ router.use(session({
 const authPost = async (req, res) => {
   try {
     const generatedOTP = Math.floor(Math.random() * 8999 + 1000);
-    //const generatedOTP = 8520;
     req.session.OTP = generatedOTP;
     console.log("OTP from /:", req.session.OTP);
     const username =  req.body.username;
@@ -37,14 +27,12 @@ const authPost = async (req, res) => {
     req.session.number = phoneNumber
     console.log("phoneNumber", phoneNumber);
  
-    await client.messages
-      .create({
-          body: `Your OTP verification for MartX.com is ${generatedOTP}`,
-          from: 'whatsapp:+14155238886',
-          to: `whatsapp:+91${phoneNumber}`
-      })
+    // await client.messages.create({
+    //   body: `Your OTP verification for MartX.com is ${generatedOTP}`,
+    //   to: phoneNumber,
+    //   from: "+14177945664",
+    // });
     req.session.storedOTP = generatedOTP;
-
     res.redirect('/verifyOTP');
     console.log("Message sent successfully");
   } catch (err) {
@@ -69,7 +57,6 @@ const authUserPost = async (req, res) => {
         isAdmin: req.body.username === 'admin',
         number: number // Save the number if it is provided in the request body
       });
-
       if (req.body.number) {
         user.number = req.body.number;
       }  
@@ -78,37 +65,23 @@ const authUserPost = async (req, res) => {
       res.redirect('/');
     } else {
       console.log("Invalid OTP");
-      res.render('userSignup', { error: true});
+      res.render('partials/user-partials', { error: true});
     }
   } catch (error) {
     console.error("Error retrieving OTP from database:", error);
-    res.render('userSignup', { error: true});
+    res.render('partials/user-partials', { error: true});
   }
 }; 
 
 
 const authuserGet = async (req, res) => {
-  const categories = await CategoryModel.find({});
-  const products = await ProductModel.find({});
-  const productNames = products.map(product => product.Model);
-  const categoryNames = categories.map(category => category.title);
-  res.render('userSignup', { error: false,
-    productNames: JSON.stringify(productNames),
-    categoryNames: JSON.stringify(categoryNames),
-  });
+  res.render('partials/user-partials', { error: false });
 };
 
 
 
 const getUserSignup = async (req, res) => {
-  const categories = await CategoryModel.find({});
-  const products = await ProductModel.find({});
-  const productNames = products.map(product => product.Model);
-  const categoryNames = categories.map(category => category.title);
-  res.render('userSignup',{
-    productNames: JSON.stringify(productNames),
-    categoryNames: JSON.stringify(categoryNames),
-  });
+  res.render('userSignup');
 };
 
 const postSignup = async (req, res) => {
@@ -135,11 +108,9 @@ const postSignup = async (req, res) => {
   }
 };
 
-
 const authLoginPost = async (req, res) => {
   try {
     const generatedOTP = Math.floor(Math.random() * 8999 + 1000);
-    // const generatedOTP = 8520;
     req.session.OTP = generatedOTP;
     console.log("OTP from /:", req.session.OTP);
     const username =  req.body.username;
@@ -148,95 +119,72 @@ const authLoginPost = async (req, res) => {
     req.session.number = phoneNumber
     console.log("phoneNumber", phoneNumber);
 
-
-    await client.messages
-      .create({
-          body: `Your OTP verification for MartX.com is ${generatedOTP}`,
-          from: 'whatsapp:+14155238886',
-          to: `whatsapp:${phoneNumber}`
-      })
+    // await client.messages.create({
+    //   body: `Your OTP verification for MartX.com is ${generatedOTP}`,
+    //   to: phoneNumber,
+    //   from: "+14177945664",
+    // });
     req.session.storedOTP = generatedOTP;
-
-    res.redirect('/verifyLoginOTP');
+    res.json({ success: true }); // Return the response as JSON object
     console.log("Message sent successfully");
   } catch (err) {
-    console.error(err, "Error");
+    res.status(500).json({ success: false, error: err.message }); // Return the error response as JSON object
   }
 };
 
 const authUserLoginGet = async (req, res) => {
   const categories = await CategoryModel.find({});
   const products = await ProductModel.find({});
-  const productNames = products.map(product => product.Model);
-  const categoryNames = categories.map(category => category.title);
-  res.render('userLogin', {
-     error: false,
-     productNames: JSON.stringify(productNames),
-     categoryNames: JSON.stringify(categoryNames),
-    });
+  console.log("authUserLoginGet true");
+  res.render('index',{categories, 
+    products});
 };
 
 const authUserLoginPost = async (req, res) => {
   try {
-    const enteredOTP = Object.values(req.body.otp);
+    const enteredOTP = Object.values(req.body); // Updated this line
     console.log("enteredOTP", enteredOTP);
     const storedOTP = req.session.storedOTP;
-    const number = req.session.number;
-    const enteredOTPString = enteredOTP.join("");
-    const storedOTPString = storedOTP.toString();
-    
+    const enteredOTPString = enteredOTP.join(""); // Updated this line
+    const storedOTPString = storedOTP.otp.toString(); // Updated this line
+
     if (enteredOTPString === storedOTPString) {
+      console.log("isAuthenticated true");
       req.session.isAuthenticated = true;
-      const existingUser = await User.findOne({ number });
+      const existingUser = await User.findOne({ number: storedOTP.number }); // Updated this line
       if (existingUser) {
+        console.log("existingUser LoggedIn");
         res.redirect('/');
       } else {
         const newUser = new User({
           storedOTP: storedOTP,
           isAdmin: req.body.username === 'admin',
-          number: number
+          number: storedOTP.number // Updated this line
         });
-        if (req.body.number) {
-          newUser.number = req.body.number;
-        }
         await newUser.save();
         console.log("User saved:", newUser);
         res.redirect('/');
       }
     } else {
       console.log("Invalid OTP");
-      res.render('userLogin', { error: true });
+      res.redirect('/partials/user-partials'); // Modify this to the appropriate URL that displays the error alert
     }
   } catch (error) {
     if (error.code === 11000 && error.keyPattern && error.keyPattern.number) {
-
-      console.error("Number already exists:", number);
-      res.render('userLogin', { error: true });
+      console.error("Number already exists:", storedOTP.number);
+      res.render('partials/user-partials', { error: true });
     } else {
       console.error("Error retrieving OTP from database:", error);
-      res.render('userLogin', { error: true });
+      res.render('partials/user-partials', { error: true });
     }
-  };
+  }
 };
 
 
 const getUserLogin = async (req, res) => {
-  const { number} = req.body;
-  try {
-    const categories = await CategoryModel.find({});
-    const products = await ProductModel.find({});
-    const user = await User.findById(number);
-    const productNames = products.map(product => product.Model);
-    const categoryNames = categories.map(category => category.title);
-    res.render('userLogin',{     
-      productNames: JSON.stringify(productNames),
-      categoryNames: JSON.stringify(categoryNames),});
-  } catch (error) {
-    console.error(error);
-    res.render('userLogin');
-  }
+  console.error("getUserLogin");
+  res.render('index', { error: false }); // Render the main page that includes the login modal
 };
-
 
 const postLogin = async (req, res) => {
   const { number, otp } = req.body;
@@ -245,22 +193,23 @@ const postLogin = async (req, res) => {
     if (existingUser) {
       if (existingUser.storedOTP === otp.join('')) {
         req.session.userId = existingUser._id;
+        console.error("postLogin");
         res.redirect('/');
       } else {
-        res.redirect('/userLogin');
+        res.render('partials/user-partials/verifyLoginOTP', { error: true }); // Render the login modal with the error message
       }
     } else {
       // New number, no need to save in DB for validation only
       req.session.tempNumber = number;
       req.session.tempOTP = otp.join('');
+      console.error("else  postLogin");
       res.redirect('/');
     }
   } catch (error) {
     console.error(error);
-    res.redirect('/userLogin');
+    res.render('partials/user-partials/verifyLoginOTP', { error: true }); // Render the login modal with the error message
   }
 };
-
 
 const getLogout = (req, res) => {
   // Destroy the session and log out the user

@@ -29,10 +29,7 @@ const getIndex = async (req, res, next) => {
 
 
 const getLogin = (req, res) => {
-
-  console.log("the getLogin hits",res);
-
-  res.render("signin")
+res.render("signin")
 };
 const postIndex = async(req, res, next) => {
   try {
@@ -139,7 +136,6 @@ const logout = (req, res) => {
 
 const getItems = async (req, res, next) => {
   try {
-    console.log("Get item try");
     const item = await ProductModel.find({});
     const categories = await CategoryModel.find({});
     res.render('items', { item, categories,layout:"admin_Layout",adminIndex:true });
@@ -212,8 +208,6 @@ const updateCategorytatus = async (req, res, next) => {
   try {
     const productId = req.params.id;
     const isDeleted = req.body.isDeleted;
-    console.log("productID", req.params.id);
-    console.log("isDeleted", req.body.isDeleted);
     const product = await CategoryModel.findById(productId);
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });

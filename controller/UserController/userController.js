@@ -3,7 +3,6 @@ const session = require('express-session');
 const userRouter = express.Router();
 const User = require('../../models/user');
 const mongoose = require('mongoose');
-const { ObjectId } = mongoose.Types;
 const ProductModel  =  require('../../models/productsModel');
 const CategoryModel = require('../../models/categoryModel');
 const couponModel = require('../../models/coupon');
@@ -83,9 +82,6 @@ console.log("banners",banners);
   }
 };
 
-
-
-
 const renderproductPage = async (req, res, next) => {
   try {
     const categories = await CategoryModel.find({});
@@ -93,9 +89,6 @@ const renderproductPage = async (req, res, next) => {
     const categoryID = req.query.id;
     const category = await CategoryModel.find({categoryID});
     const product = await ProductModel.findById(productId);
-    console.log('productId:', productId);
-    console.log('categoryID:', category);
-
 
     if (!product) {
       return res.status(404).render('error', { message: 'Product not found' });
@@ -134,7 +127,7 @@ const renderproductPage = async (req, res, next) => {
       usercategories,
       categories,
       products,
-      productNames: JSON.stringify(productNames), // Pass the product names to the client-side
+      productNames: JSON.stringify(productNames),
       categoryNames: JSON.stringify(categoryNames),
     });
   } catch (err) {
@@ -210,14 +203,10 @@ const postCart = async (req, res, next) => {
     await user.save();
     const addedCartItem = user.cart.find((item) => item.id === productId);
     if (!addedCartItem) {
-
       console.log("addedCartItem",addedCartItem);
-
       return res.status(404).json({ error: 'Added cart item not found' });
     }
-
     res.redirect('/cart?success=true');
-
   } catch (error) {
     console.log("post error cart",error);
     next(error);

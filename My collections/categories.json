@@ -1,0 +1,32 @@
+[{
+  "_id": {
+    "$oid": "648ecdd1ac431ea9c0b99965"
+  },
+  "title": "Camera",
+  "image": "00f65374-016a-4783-a298-0d2490946f29.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "648f0776ac431ea9c0b99977"
+  },
+  "title": "Mobile",
+  "image": "b97d8636-2141-43f9-89ae-288d01db9256.webp",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "648f0e07ac431ea9c0b9998a"
+  },
+  "title": "Bluetooth Speaker",
+  "image": "d117961a-9298-4847-bbc9-28509906dba5.webp",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "648f14f6ac431ea9c0b999b9"
+  },
+  "title": "Watches",
+  "image": "efc5c76c-deb6-4f4e-821f-2c0901782c57.webp",
+  "__v": 0
+}]

@@ -1,0 +1,10 @@
+[{
+  "_id": {
+    "$oid": "64b304ae4ec20216e8f99e33"
+  },
+  "name": "dfsf",
+  "price": 100,
+  "voucherCode": "ES100",
+  "description": "ES100 code ",
+  "__v": 0
+}]

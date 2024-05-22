@@ -5,19 +5,17 @@ const userRouter = express.Router();
 let products = [];
 
 /* GET home page. */
-const ProductModel =  require('../models/productsModel');
-const CategoryModel = require('../models/categoryModel');
-const User = require('../models/user');
 const userController = require('../controller/UserController/userController');
 const AuthControllers = require('../controller/AuthController/AuthController');
 const offerController = require('../controller/adminController/offerController');
 const { errorHandler } = require('../middleware/errorHandler');
 
 
+userRouter.post('/generateOTP', AuthControllers.authPost);
+
 userRouter.get('/verifyOTP',AuthControllers.authuserGet);
 userRouter.post('/verifyOTP', AuthControllers.authUserPost);
 
-userRouter.post('/generateOTP', AuthControllers.authPost);
 
 userRouter.get("/userLogin", AuthControllers.getUserLogin);
 userRouter.post("/userLogin", AuthControllers.postLogin)
@@ -95,6 +93,3 @@ userRouter.get('/triggerError500', userController.triggerError500);
 
 
 module.exports = userRouter;
-
-
-

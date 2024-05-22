@@ -1,0 +1,160 @@
+[{
+  "_id": {
+    "$oid": "6490cab50572b32e4839e640"
+  },
+  "SellPrice": 42999,
+  "OfferedPrice": 29999,
+  "description": "Own the party. From backyard barbecues to weekend road trips, JBL Boombox 2 brings it with monstrous bass, bold design and an incredible 24 hours of play time. IPX7 waterproof and portable, this powerful speaker pumps out massive sound all day and all night. Plus, you can connect other JBL PartyBoost-compatible speakers to turn the party up. JBL Boombox 2 keeps your friends dancing and its built-in powerbank keeps your devices charged. So you can groove from dusk till dawn and keep going strong!",
+  "Model": "JBL Boombox 2 Deep Bass",
+  "quantity": -8,
+  "itemImage": [
+    "9ba134b3-4f0c-4b14-b38e-6f39c77d539d.jpg",
+    "2d85c104-2d36-4638-9723-4442b1b226f9.jpg",
+    "1ffd4f2e-d337-4f20-bffb-00c21c404711.jpg",
+    "abd0a1bf-ebec-43c1-b1a8-275bb9ba6f66.jpg"
+  ],
+  "moreInfo": {
+    "brand": "JBL",
+    "varient": "JBL Boombox 2 Deep Bass,24Hr Playtime, IPX7 Rating, 10000mAh Powerbank, Portable 80 W Bluetooth Speaker  (Black, Stereo Channel)",
+    "rating": null
+  },
+  "category": {
+    "$oid": "648f0e07ac431ea9c0b9998a"
+  },
+  "isDeleted": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6490cb450572b32e4839e647"
+  },
+  "SellPrice": 59990,
+  "OfferedPrice": 49000,
+  "description": "Is photography one of your passions? Bring home this EOS 200D II from Canon. This is Canon’s lightest DSLR that features a vari-angle LCD touch screen. It features a 24.1-megapixels APS-C CMOS sensor and a DIGIC 8 processor that capture stunning images. The EOS 200D II also has a lot of other features that make everyday photography a lot easier.",
+  "Model": "Canon EOS 200D",
+  "quantity": -9,
+  "itemImage": [
+    "38e03955-e35d-46a5-b698-b64856a0308b.jpg",
+    "1894cee9-ac11-4e08-a2fc-2d17becfa955.jpg",
+    "82ee299c-de2c-43d9-99eb-6e39aa8ab699.jpg",
+    "fb6cc547-8806-42db-9810-e671950c5acd.jpg",
+    "51fa7b63-1923-4d73-9ee5-6d22d5a8ba29.jpg"
+  ],
+  "moreInfo": {
+    "brand": "cannon",
+    "varient": "Canon EOS 200D II DSLR Camera EF-S18-55mm IS STM",
+    "rating": null
+  },
+  "category": {
+    "$oid": "648ecdd1ac431ea9c0b99965"
+  },
+  "isDeleted": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6490ccd70572b32e4839e65f"
+  },
+  "SellPrice": 18995,
+  "OfferedPrice": 17095,
+  "description": "Sleek, self-winding and styled to tick on time with a built-in rotor, our Grant does the work for you. This timeless automatic gets refreshed for the season with a refined dial and rich leather strap. (No batteries required with a 40-hour power reserve.)",
+  "Model": "ME3099",
+  "quantity": 9,
+  "itemImage": [
+    "a8ef2f3c-e07b-4a16-aee8-3ba8ea2fdf7a.jpg",
+    "b7f9e624-7754-4f43-abcf-353cb4223068.jpg",
+    "5f395e98-bc9a-4243-8817-dfba68540c0d.jpg",
+    "3f4fff25-ea15-4872-acb4-5a5e4cb52de5.jpg",
+    "737ecee5-85a3-4f5a-a99f-34e13bf364bf.jpg"
+  ],
+  "moreInfo": {
+    "brand": "FOSSIL ",
+    "varient": "Grant Analog Watch - For Men ME3099",
+    "rating": null
+  },
+  "category": {
+    "$oid": "648f14f6ac431ea9c0b999b9"
+  },
+  "isDeleted": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6490cd850572b32e4839e66a"
+  },
+  "SellPrice": 189900,
+  "OfferedPrice": 177999,
+  "description": " Dynamic Island, Always-On Display, Pro Motion Technology with Adaptive Refresh Rates Upto 120 Hz, HDR Display, True Tone, Wide Colour (P3), Haptic Touch, Contrast Ratio: 20,00,000:1, Max Brightness: 1,000 nits, Peak Brightness: 1,600 nits, Peak Brightness (Outdoor): 2,000 nits. Primary Camera Features Triple Camera Setup: 48MP Main Camera (Focal Length: 24 mm, f/1.78 Aperture, Second Generation Sensor Shift Optical Image Stabilisation, Seven Element Lens, 100% Focus Pixels) + 12MP Ultra Wide Camera (Focal Length: 13 mm, f/2.2 Aperture, FOV: 120 Degree, Six Element Lens, 100% Focus Pixels) + 12MP 3 x Telephoto Camera (Focal Length: 77 mm, f/2.8 Aperture, Optical Image Stabilisation, Six Element Lens), Camera Feature: Photonic Engine, Deep Fusion, Smart HDR 4, Portrait Mode with Advanced Bokeh and Depth Control, Portrait Lighting with Six Effects (Natural, Studio, Contour, Stage, Stage Mono, High Key Mono), Night Mode, Night Mode Portraits Enabled by LiDAR Scanner, Panorama (Upto 63MP), Photographic Styles, Macro Photography, Apple ProRAW, Wide Colour Capture for Photos and Live Photos",
+  "Model": " iPhone 14 Pro Max ",
+  "quantity": 29,
+  "itemImage": [
+    "49fbefae-5c38-4131-9966-c25dc8cf9171.jpg",
+    "b8f4f7bf-9a09-44be-b6fa-2d96b4460b64.jpg",
+    "64f671a9-393e-4c4a-bb02-c6fdc45f30ef.jpg",
+    "6045aed0-20b6-4424-bfcf-03fe8fb410d4.jpg",
+    "5b264b36-7a42-4dac-9d24-d37095c3df99.jpg"
+  ],
+  "moreInfo": {
+    "brand": "APPLE",
+    "varient": "APPLE iPhone 14 Pro Max (Deep Purple, 1 TB)",
+    "rating": null
+  },
+  "category": {
+    "$oid": "648f0776ac431ea9c0b99977"
+  },
+  "isDeleted": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "649e76237e38559cf54ef035"
+  },
+  "SellPrice": 300,
+  "OfferedPrice": 200,
+  "description": "Iphone",
+  "Model": "model",
+  "quantity": 50,
+  "itemImage": [
+    "7c63d75e-9dc9-498a-a116-2e352437b6e8.jpg",
+    "c4b9d49a-ec07-4012-86dc-ae7e1b9cb8ad.jpg",
+    "b73179a3-108e-4562-8716-b593da30c31d.jpg",
+    "6865635a-0aa0-4620-8f65-a9a728fd1777.jpg"
+  ],
+  "moreInfo": {
+    "brand": "APPLE",
+    "varient": "title",
+    "rating": null
+  },
+  "category": {
+    "$oid": "648f0776ac431ea9c0b99977"
+  },
+  "isDeleted": true,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "64bbcf2076550b634c30f340"
+  },
+  "SellPrice": 33990,
+  "OfferedPrice": 29000,
+  "description": "Powerfull sound :With two front tweeters for crisp highs, and dual X-balanced speakers deliver a deep and punchy sound Battery Life : Now you can enjoy music non stop upto 20hrs of battery life IPX4 splash proof :With an IPX4 splash resistance rating, it can stand up to splashes and spills, so you can enjoy the party with no worries Ambient Lighting :Give your party a fresh, modern look with the indirect illumination lighting concept it perfectly fit for both parties and everyday use Quick Charge :Just 10 minutes of charging provides up to 80 min of playback",
+  "Model": "Sony SRS-XP500 Portable Wireless Bluetooth Party Speaker",
+  "quantity": 50,
+  "itemImage": [
+    "3bf09ee4-4b19-4973-a6cc-c00d9e31c50b.jpg",
+    "f6ef8b57-5b90-4032-adbf-609502437f18.jpg",
+    "d757c578-6c55-4071-b493-0a328154da7c.jpg",
+    "102fe74f-40f3-4eb9-b630-6d75d7145150.jpg",
+    "2a5977cc-6ba7-407f-8454-5101f60ad715.jpg"
+  ],
+  "moreInfo": {
+    "brand": "Sony",
+    "varient": "Bluetooth, USB",
+    "rating": null
+  },
+  "category": {
+    "$oid": "648f0e07ac431ea9c0b9998a"
+  },
+  "isDeleted": true,
+  "__v": 0
+}]

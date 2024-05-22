@@ -1,0 +1,383 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+
+    <!-- Topbar Start -->
+    <div class="container-fluid">
+
+        <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
+            <div class="col-lg-4">
+                <a href="" class="text-decoration-none">
+                    <span class="h1 text-uppercase text-warning bg-dark px-2">Mart</span>
+                    <span class="h1 text-uppercase text-dark bg-warning px-2 ml-n1">X</span>
+                </a>
+            </div>
+            <div class="col-lg-4 col-6 text-left">
+                <form action="">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for products">
+                        <div class="input-group-append">
+                            <span class="input-group-text bg-transparent text-primary">
+                                <i class="fa fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4 col-6 text-right">
+                    <h6 class="Welcome-text">Welcome </h6>
+                    
+                  <h6 class="Welcome-text">Welcome Guest</h6>       
+              </div>
+              
+              
+        </div>
+    </div>
+    <!-- Topbar End -->
+    <!-- Navbar Start -->
+    <div class="container-fluid bg-dark mb-30" id="btn-all">
+        <div class="row px-xl-5">
+            <div class="col-lg-3 d-none d-lg-block">
+                <a class="btn d-flex align-items-center justify-content-between bg-warning btn-outline-dark w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
+                    <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Categories</h6>
+                    <i class="fa fa-angle-down text-dark"></i>
+                </a>
+                <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
+                    <div class="navbar-nav w-100">
+                        <div class="nav-item dropdown dropright">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Electronics <i class="fa fa-angle-right float-right mt-1"></i></a>
+                            <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
+                                <a href="" class="dropdown-item">Head Phone</a>
+                                <a href="" class="dropdown-item">Bluethooth Speaker</a>
+                                <a href="" class="dropdown-item">Tv</a>
+                            </div>
+                        </div>
+                        <a href="" class="nav-item nav-link">Mobile</a>
+                        <a href="" class="nav-item nav-link">Camera</a>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-lg-9">
+                <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
+                    <a href="" class="text-decoration-none d-block d-lg-none">
+                        <span class="h1 text-uppercase text-dark bg-light px-2">Multi</span>
+                        <span class="h1 text-uppercase text-light bg-primary px-2 ml-n1">Shop</span>
+                    </a>
+                    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-between " id="navbarCollapse">
+                        <div class="navbar-nav mr-auto py-0 ">
+                            <a href="/" class="nav-item nav-link active ">Home</a>
+                            <a href="/" class="nav-item nav-link">Shop</a>
+                            <a href="/" class="nav-item nav-link">Shop Detail</a>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Pages <i class="fa fa-angle-down mt-1"></i></a>
+                                <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
+                                    <a href="/cart" class="dropdown-item">Shopping Cart</a>
+                                    <a href="/orderList" class="dropdown-item">Orders</a>
+                                </div>
+                            </div>
+                            <a href="contact.html" class="nav-item nav-link">Contact</a>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-dark dropdown-toggle" data-toggle="dropdown">
+                                <i class="fas fa-user-circle text-white"></i>
+                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 5px;"></span>
+                            </button>
+                        
+                            <div class="dropdown-menu dropdown-menu-right">
+                              <a class="dropdown-item" href="/UserProfile" >Profile</a>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#signupModal">Sign up</a>
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginOtpModal">Login</a>
+
+                                  <form method="GET" action="/logout" class="sbt-btn justify-content-center">
+                                    <button class="dropdown-item" type="submit">Log out</button>
+                                  </form>
+                  
+                              </div>
+                              
+                            
+                            
+                            
+                        </div>
+                        
+                            <a href="" class="btn px-0 ml-3">
+                                <i class="fas fa-heart text-white"></i>
+                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                            </a>
+                            <a href="/cart" class="btn px-0 ml-3">
+                                <i class="fas fa-shopping-cart text-white"></i>
+                                <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                            </a>
+                        </div>  
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="btn btn-warning back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+
+<!--***** signup Modal *****-->
+
+<!-- Sign Up Modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Modal content goes here -->
+        <div class="container-fluid">
+          <div class="row h-100 align-items-center justify-content-center">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4" style="width: 100%;">
+              <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <a href="/" class="">
+                    <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>MartX</h3>
+                  </a>
+                  <h3>Sign Up</h3>
+                </div>
+                <form action="/userSignup" method="post">
+                  <label for="signupUsername">Username</label>
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="signupUsername" name="username" placeholder="Username">
+                  </div>
+                  <label for="signupPassword">Password</label>
+                  <div class="form-floating mb-4">
+                    <input type="password" class="form-control" id="signupPassword" name="password" placeholder="Password">
+                  </div>
+                  <label for="phoneNumber">Phone Number</label>
+
+                  <div class="form-floating mb-3">
+                    <input type="tel" class="form-control" id="phoneNumber" placeholder="+91630" name="number" style="width: 100%;">
+                  </div>
+                  <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
+                </form>
+                <button type="button" class="btn btn-primary py-3 w-100 mb-4 " data-bs-toggle="modal"  data-bs-target="#signupOtpModal">
+                  Login using OTP
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OTP Sign In Modal -->
+<div class="modal fade" id="signupOtpModal" tabindex="-1" role="dialog" aria-labelledby="signupOtpModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="signupOtpModalLabel">Sign In</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row h-100 align-items-center justify-content-center">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4" style="width: 100%;">
+              <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <a href="index.html" class="">
+                    <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>MartX</h3>
+                  </a>
+                  <h3>Sign In</h3>
+                </div>
+                <form action="/generateOTP" method="post">
+                  <label for="loginUsername">Username</label>
+                  <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="loginUsername" name="username" placeholder="Username" style="width: 100%;">
+                  </div>
+                  <label for="phoneNumber">Phone Number</label>
+                  <div class="form-floating mb-3">
+                    <input type="tel" class="form-control" id="phoneNumber" placeholder="+91630" name="number" style="width: 100%;">
+                  </div>
+                  <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Login With OTP</button>
+                </form>
+                <form action="/verifyOTP" method="post">
+                  <label for="otp">OTP</label>
+                  <div class="form-floating mb-3">
+                    <div class="d-flex justify-content-center">
+                      <input type="number" name="otp" id="otp1" maxlength="1" onkeyup="clickEvent(this,'otp2')" onclick="stopPropagation(event)">
+                      <input type="number" name="otp" id="otp2" maxlength="1" onkeyup="clickEvent(this,'otp3')" onclick="stopPropagation(event)">
+                      <input type="number" name="otp" id="otp3" maxlength="1" onkeyup="clickEvent(this,'otp4')" onclick="stopPropagation(event)">
+                      <input type="number" name="otp" id="otp4" maxlength="1" onkeyup="clickEvent(this,'otp5')" onclick="stopPropagation(event)">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--***** signup Modal *****-->
+
+<!-- Your HTML code here -->
+
+<!-- Include necessary dependencies (e.g., Bootstrap, FontAwesome) -->
+<!-- Your HTML code here -->
+
+<!-- Include necessary dependencies (e.g., Bootstrap, FontAwesome) -->
+
+<div class="modal fade" id="loginOtpModal" tabindex="-1" aria-labelledby="loginOtpModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginOtpModalLabel">Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Modal content goes here -->
+        <div class="container-fluid">
+          <div class="row h-100 align-items-center justify-content-center">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4" style="width: 100%;">
+              <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <a href="/" class="">
+                    <h3 class="text-white"><i class="fa fa-user-edit me-2"></i>MartX</h3>
+                  </a>
+                  <h3>Login</h3>
+                </div>
+                <form id="otpGenerationForm">
+                  <div class="form-floating mb-3">
+                    <input type="tel" class="form-control" id="floatingNumber" placeholder="+91630" name="number" style="width: 100%;">
+                    <label for="floatingNumber">Phone Number</label>
+                  </div>
+                  <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Login With OTP</button>
+                </form>
+
+                <form id="otpVerificationForm" style="display: none;">
+                  <label for="floatingOTP">OTP</label>
+                  <div class="form-floating mb-3">
+                    <div class="d-flex justify-content-center">
+                      <input type="number" name="otp" id="first" maxlength="1" onkeyup="clickEvent(this,'sec')" onclick="stopPropagation(event)">
+                      <input type="number" name="otp" id="sec" maxlength="1" onkeyup="clickEvent(this,'third')" onclick="stopPropagation(event)">
+                      <input type="number" name="otp" id="third" maxlength="1" onkeyup="clickEvent(this,'fourth')" onclick="stopPropagation(event)">
+                      <input type="number" name="otp" id="fourth" maxlength="1" onkeyup="clickEvent(this,'fifth')" onclick="stopPropagation(event)">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-primary py-3 w-100 mb-4" data-bs-dismiss="modal">
+                    Submit
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/javaScript/user.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var loginOtpModal = new bootstrap.Modal(document.getElementById('loginOtpModal'), {
+      backdrop: 'static',
+      keyboard: false
+    });
+
+    // Show the modal when clicking on the "Login" button
+    document.getElementById('loginButton').addEventListener('click', function (event) {
+      event.preventDefault();
+      loginOtpModal.show();
+    });
+
+    // Handle form submission for generating OTP
+    document.getElementById('otpGenerationForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var number = document.getElementById('floatingNumber').value;
+
+      fetch('/generateLoginOTP', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ number: number })
+      })
+        .then(function (response) {
+          if (response.ok) {
+            // OTP sent successfully, display a message or perform any other actions
+            console.log('OTP sent successfully');
+            return response.json(); // Return the JSON response
+          } else {
+            // Error occurred while generating/sending the OTP
+            console.error('Error generating/sending OTP');
+            throw new Error('Error generating/sending OTP');
+          }
+        })
+        .then(function (jsonResponse) {
+          // Handle the JSON response here
+          console.log(jsonResponse);
+          if (jsonResponse.success) {
+            // OTP generated successfully, display the OTP verification form
+            // You can keep the modal open and show the OTP verification fields
+            document.getElementById('otpGenerationForm').style.display = 'none'; // Hide the OTP generation form
+            document.getElementById('otpVerificationForm').style.display = 'block'; // Show the OTP verification form
+          } else {
+            // Handle any other response scenarios
+            console.error('Unexpected JSON response');
+          }
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    });
+
+    // Handle form submission for OTP verification
+    document.getElementById('otpVerificationForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var otp = '';
+      // Concatenate the entered OTP from individual input fields
+      otp += document.getElementById('first').value;
+      otp += document.getElementById('sec').value;
+      otp += document.getElementById('third').value;
+      otp += document.getElementById('fourth').value;
+
+      fetch('/postVerifyLoginOTP', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ otp: otp })
+      })
+        .then(function (response) {
+          if (response.ok) {
+            // OTP is valid, redirect to the index page
+            console.log('OTP is valid');
+            alert('OTP is valid'); // Display an alert for correct OTP
+            window.location.href = '/'; // Redirect to the index page
+          } else {
+            // Invalid OTP or error occurred during verification
+            console.error('Invalid OTP', response.ok);
+            alert('Incorrect OTP'); // Display an alert for incorrect OTP
+          }
+        })
+        .catch(function (error) {
+          console.error(error);
+        })
+        .finally(function () {
+          // Reset the OTP verification form and dismiss the modal
+          document.getElementById('otpVerificationForm').reset();
+          loginOtpModal.hide();
+        });
+    });
+  });
+
+</script>
+
+
+
+
+
