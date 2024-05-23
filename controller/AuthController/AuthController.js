@@ -1,9 +1,8 @@
+//authcontroller.js
 const express = require('express');
 const session = require('express-session');
 const router = express.Router();
 require('dotenv').config();
-
-//tokens
 
 const client = require('twilio')(accountSid, authToken);
 const User = require('../../models/user');

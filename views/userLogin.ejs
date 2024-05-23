@@ -38,34 +38,4 @@
           </div>
       </div>
   </div>
-
-
-<!-- 
-  <form action="/userLogin" method="POST">
-    <div class="form-floating mb-3">
-    <input type="text" name="username"class="form-control" id="floatingInput" placeholder="Username" required><br>
-</div>
-<div class="form-floating mb-3">
-    <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password" required><br>
-</div>
-<div class="form-floating mb-3">
-    <button type="submit">Login</button></div>
-  </form> -->
-
   <%- include('includes/userIncludes/userFooter.ejs') %>
-
-
-
-
-<!-- const accountSid = 'AC3264fb3d6de096b63b269955287ade71';
-const authToken = '[AuthToken]';
-const client = require('twilio')(accountSid, authToken);
-
-client.messages
-    .create({
-        body: `Your OTP verification for MartX.com is ${generatedOTP}`,
-        from: 'whatsapp:+14155238886',
-        to: 'whatsapp:+916282335930'
-    })
-    .then(message => console.log(message.sid))
-    .done(); -->
